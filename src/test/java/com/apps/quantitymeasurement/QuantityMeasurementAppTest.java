@@ -2,208 +2,127 @@ package com.apps.quantitymeasurement;
 
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
-import com.apps.quantitymeasurement.QuantityMeasurementApp.Feet;
-import com.apps.quantitymeasurement.QuantityMeasurementApp.Inches;
+
+//import com.apps.quantitymeasurement.Length;
+import com.apps.quantitymeasurement.Length.LengthUnit;
 
 public class QuantityMeasurementAppTest {
 
-    //Feet Test Cases
-
+    // 1. Same unit (Feet)
     @Test
     void givenSameFeetValue_shouldReturnTrue() {
-        Feet f1 = new Feet(1.0);
-        Feet f2 = new Feet(1.0);
+        Length l1 = new Length(1.0, LengthUnit.FEET);
+        Length l2 = new Length(1.0, LengthUnit.FEET);
 
-        assertTrue(f1.equals(f2));
+        assertTrue(l1.equals(l2));
     }
 
-    @Test
-    void givenDifferentFeetValue_shouldReturnFalse() {
-        Feet f1 = new Feet(1.0);
-        Feet f2 = new Feet(2.0);
-
-        assertFalse(f1.equals(f2));
-    }
-
-    @Test
-    void givenSameFeetReference_shouldReturnTrue() {
-        Feet f1 = new Feet(1.0);
-
-        assertTrue(f1.equals(f1));
-    }
-
-    @Test
-    void givenNullWithFeet_shouldReturnFalse() {
-        Feet f1 = new Feet(1.0);
-
-        assertFalse(f1.equals(null));
-    }
-
-    @Test
-    void givenDifferentWithFeetType_shouldReturnFalse() {
-        Feet f1 = new Feet(1.0);
-        Object obj = new Object();
-
-        assertFalse(f1.equals(obj));
-    }
-
-    @Test
-    void equalsFeetSelf_shouldBeReflexive() {
-        Feet f = new Feet(2.5);
-
-        assertTrue(f.equals(f));
-    }
-
-    @Test
-    void equalsFeet_shouldBeSymmetric() {
-        Feet f1 = new Feet(3.0);
-        Feet f2 = new Feet(3.0);
-
-        assertTrue(f1.equals(f2));
-        assertTrue(f2.equals(f1));
-    }
-
-    @Test
-    void equalsFeet_shouldBeTransitive() {
-        Feet f1 = new Feet(4.0);
-        Feet f2 = new Feet(4.0);
-        Feet f3 = new Feet(4.0);
-
-        assertTrue(f1.equals(f2));
-        assertTrue(f2.equals(f3));
-        assertTrue(f1.equals(f3));
-    }
-
-    @Test
-    void equalsFeet_shouldBeConsistent() {
-        Feet f1 = new Feet(5.0);
-        Feet f2 = new Feet(5.0);
-
-        assertTrue(f1.equals(f2));
-        assertTrue(f1.equals(f2)); // repeat
-    }
-
-    @Test
-    void equalFeetObjects_shouldHaveSameHashCode() {
-        Feet f1 = new Feet(6.0);
-        Feet f2 = new Feet(6.0);
-
-        assertEquals(f1.hashCode(), f2.hashCode());
-    }
-
-    @Test
-    void givenFeetNegativeValues_shouldCompareCorrectly() {
-        Feet f1 = new Feet(-2.0);
-        Feet f2 = new Feet(-2.0);
-
-        assertTrue(f1.equals(f2));
-    }
-
-    @Test
-    void givenZeroFeetValue_shouldCompareCorrectly() {
-        Feet f1 = new Feet(0.0);
-        Feet f2 = new Feet(0.0);
-
-        assertTrue(f1.equals(f2));
-    }
-
-    //Inches Test Cases
-
+    // 2. Same unit (Inches)
     @Test
     void givenSameInchesValue_shouldReturnTrue() {
-        Inches f1 = new Inches(1.0);
-        Inches f2 = new Inches(1.0);
+        Length l1 = new Length(12.0, LengthUnit.INCHES);
+        Length l2 = new Length(12.0, LengthUnit.INCHES);
 
-        assertTrue(f1.equals(f2));
+        assertTrue(l1.equals(l2));
     }
 
+    // 🔥 3. Cross-unit equality (CORE UC3)
     @Test
-    void givenDifferentInchesValue_shouldReturnFalse() {
-        Inches f1 = new Inches(1.0);
-        Inches f2 = new Inches(2.0);
+    void givenFeetAndInchesEquivalent_shouldReturnTrue() {
+        Length l1 = new Length(1.0, LengthUnit.FEET);
+        Length l2 = new Length(12.0, LengthUnit.INCHES);
 
-        assertFalse(f1.equals(f2));
+        assertTrue(l1.equals(l2));
     }
 
+    // 4. Cross-unit inequality
     @Test
-    void givenSameInchesReference_shouldReturnTrue() {
-        Inches f1 = new Inches(1.0);
+    void givenFeetAndInchesNotEquivalent_shouldReturnFalse() {
+        Length l1 = new Length(1.0, LengthUnit.FEET);
+        Length l2 = new Length(10.0, LengthUnit.INCHES);
 
-        assertTrue(f1.equals(f1));
+        assertFalse(l1.equals(l2));
     }
 
+    // 5. Same unit inequality (Feet)
     @Test
-    void givenNullWithInches_shouldReturnFalse() {
-        Inches f1 = new Inches(1.0);
+    void givenDifferentFeetValues_shouldReturnFalse() {
+        Length l1 = new Length(1.0, LengthUnit.FEET);
+        Length l2 = new Length(2.0, LengthUnit.FEET);
 
-        assertFalse(f1.equals(null));
+        assertFalse(l1.equals(l2));
     }
 
+    // 6. Same unit inequality (Inches)
     @Test
-    void givenDifferentWithInchesType_shouldReturnFalse() {
-        Inches f1 = new Inches(1.0);
-        Object obj = new Object();
+    void givenDifferentInchesValues_shouldReturnFalse() {
+        Length l1 = new Length(12.0, LengthUnit.INCHES);
+        Length l2 = new Length(24.0, LengthUnit.INCHES);
 
-        assertFalse(f1.equals(obj));
+        assertFalse(l1.equals(l2));
     }
 
+    // 7. Reflexive property
     @Test
-    void equalsInchesSelf_shouldBeReflexive() {
-        Inches f = new Inches(2.5);
+    void equals_shouldBeReflexive() {
+        Length l = new Length(5.0, LengthUnit.FEET);
 
-        assertTrue(f.equals(f));
+        assertTrue(l.equals(l));
     }
 
+    // 8. Symmetric property
     @Test
-    void equalsInches_shouldBeSymmetric() {
-        Inches f1 = new Inches(3.0);
-        Inches f2 = new Inches(3.0);
+    void equals_shouldBeSymmetric() {
+        Length l1 = new Length(1.0, LengthUnit.FEET);
+        Length l2 = new Length(12.0, LengthUnit.INCHES);
 
-        assertTrue(f1.equals(f2));
-        assertTrue(f2.equals(f1));
+        assertTrue(l1.equals(l2));
+        assertTrue(l2.equals(l1));
     }
 
+    // 9. Transitive property
     @Test
-    void equalsInches_shouldBeTransitive() {
-        Inches f1 = new Inches(4.0);
-        Inches f2 = new Inches(4.0);
-        Inches f3 = new Inches(4.0);
+    void equals_shouldBeTransitive() {
+        Length l1 = new Length(1.0, LengthUnit.FEET);
+        Length l2 = new Length(12.0, LengthUnit.INCHES);
+        Length l3 = new Length(1.0, LengthUnit.FEET);
 
-        assertTrue(f1.equals(f2));
-        assertTrue(f2.equals(f3));
-        assertTrue(f1.equals(f3));
+        assertTrue(l1.equals(l2));
+        assertTrue(l2.equals(l3));
+        assertTrue(l1.equals(l3));
     }
 
+    // 10. Null check
     @Test
-    void equalsInches_shouldBeConsistent() {
-        Inches f1 = new Inches(5.0);
-        Inches f2 = new Inches(5.0);
+    void givenNull_shouldReturnFalse() {
+        Length l = new Length(1.0, LengthUnit.FEET);
 
-        assertTrue(f1.equals(f2));
-        assertTrue(f1.equals(f2)); // repeat
+        assertFalse(l.equals(null));
     }
 
+    // 11. Different type
     @Test
-    void equalInchesObjects_shouldHaveSameHashCode() {
-        Inches f1 = new Inches(6.0);
-        Inches f2 = new Inches(6.0);
+    void givenDifferentType_shouldReturnFalse() {
+        Length l = new Length(1.0, LengthUnit.FEET);
 
-        assertEquals(f1.hashCode(), f2.hashCode());
+        assertFalse(l.equals(new Object()));
     }
 
+    // 12. Zero value
     @Test
-    void givenInchesNegativeValues_shouldCompareCorrectly() {
-        Inches f1 = new Inches(-2.0);
-        Inches f2 = new Inches(-2.0);
+    void givenZeroValue_shouldReturnTrue() {
+        Length l1 = new Length(0.0, LengthUnit.FEET);
+        Length l2 = new Length(0.0, LengthUnit.INCHES);
 
-        assertTrue(f1.equals(f2));
+        assertTrue(l1.equals(l2));
     }
 
+    // 13. Negative values
     @Test
-    void givenZeroInchesValue_shouldCompareCorrectly() {
-        Inches f1 = new Inches(0.0);
-        Inches f2 = new Inches(0.0);
+    void givenNegativeValues_shouldCompareCorrectly() {
+        Length l1 = new Length(-1.0, LengthUnit.FEET);
+        Length l2 = new Length(-12.0, LengthUnit.INCHES);
 
-        assertTrue(f1.equals(f2));
+        assertTrue(l1.equals(l2));
     }
 }
