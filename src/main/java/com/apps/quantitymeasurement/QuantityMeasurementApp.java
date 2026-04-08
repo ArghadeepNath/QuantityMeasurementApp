@@ -6,28 +6,40 @@ public class QuantityMeasurementApp {
         return l1.equals(l2);
     }
 
-    public static void demonstrateFeetEquality(){
-        Length l1 = new Length(1.0, Length.LengthUnit.FEET);
-        Length l2 = new Length(1.0, Length.LengthUnit.FEET);
-        System.out.println(l1.equals(l2));
+    private static void demonstrateLengthComparison(double v1, Length.LengthUnit unit1, double v2, Length.LengthUnit unit2) {
+        Length l1 = new Length(v1,unit1);
+        Length l2 = new Length(v2,unit2);
+        boolean result = l1.equals(l2);
+        System.out.println(v1 + " " + unit1 + " vs " + v2 + " " + unit2 + " → " + result);
     }
 
-    public static void demonstrateInchesEquality(){
-        Length l1 = new Length(1.0, Length.LengthUnit.INCHES);
-        Length l2 = new Length(1.0, Length.LengthUnit.INCHES);
-        System.out.println(l1.equals(l2));
+    public static Length demonstrateLengthConversion(double value, Length.LengthUnit fromUnit, Length.LengthUnit toUnit) {
+        Length length = new Length(value, fromUnit);
+        Length result = length.convertTo(toUnit);
+
+        System.out.println(value + " " + fromUnit + " → " + result);
+
+        return result;
     }
 
-    public static void demonstrateFeetInchesComparison(){
-        Length l1 = new Length(1.0, Length.LengthUnit.FEET);
-        Length l2 = new Length(12.0, Length.LengthUnit.INCHES);
-        System.out.println(l1.equals(l2));
+    public static Length demonstrateLengthConversion(Length length, Length.LengthUnit toUnit) {
+
+        Length result = length.convertTo(toUnit);
+
+        System.out.println(length + " → " + result);
+
+        return result;
     }
 
     public static void main(String[] args) {
-        System.out.println(demonstrateLengthEquality(new Length(1, Length.LengthUnit.FEET), new Length(1, Length.LengthUnit.FEET)));
-        demonstrateFeetEquality();
-        demonstrateInchesEquality();
-        demonstrateFeetInchesComparison();
+
+        demonstrateLengthConversion(1.0, Length.LengthUnit.FEET, Length.LengthUnit.INCHES);
+        demonstrateLengthConversion(36.0, Length.LengthUnit.INCHES, Length.LengthUnit.YARDS);
+        demonstrateLengthConversion(100.0, Length.LengthUnit.CENTIMETERS, Length.LengthUnit.FEET);
+
+        Length l = new Length(2.0, Length.LengthUnit.YARDS);
+        demonstrateLengthConversion(l, Length.LengthUnit.FEET);
     }
+
+
 }
