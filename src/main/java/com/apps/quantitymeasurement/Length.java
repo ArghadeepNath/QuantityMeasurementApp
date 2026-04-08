@@ -47,18 +47,36 @@ public class Length {
             return this.compare(other);
         }
 
+        public Length convertTo(LengthUnit unit){
+            if (unit == null || this.unit == null) {
+                throw new IllegalArgumentException("Unit cannot be null");
+            }
+
+            if (Double.isNaN(this.value) || Double.isInfinite(this.value)) {
+                throw new IllegalArgumentException("Invalid value");
+            }
+            double convertedValue = this.value *
+                    (this.unit.getConversionFactor() / unit.getConversionFactor());
+
+            convertedValue = Math.round(convertedValue * 100.0) / 100.0;
+
+            return new Length(convertedValue, unit);
+        }
+
+    @Override
+    public String toString() {
+        return String.format("%.2f %s", value, unit);
+    }
+
         public static void main(String[] args){
             Length l1 = new Length(1.0, LengthUnit.FEET);
-            Length l2 = new Length(12.0, LengthUnit.INCHES);
-            System.out.println("Are lengths equal? "+ l1.equals(l2));
+            System.out.println("1 FEET → INCHES = " + l1.convertTo(LengthUnit.INCHES));
 
-            Length l3 = new Length(1.0, LengthUnit.YARDS);
-            Length l4 = new Length(36.0, LengthUnit.INCHES);
-            System.out.println("Are lengths equal? "+ l3.equals(l4));
+            Length l2 = new Length(36.0, LengthUnit.INCHES);
+            System.out.println("36 INCHES → YARDS = " + l2.convertTo(LengthUnit.YARDS));
 
-            Length l5 = new Length(100.0, LengthUnit.CENTIMETERS);
-            Length l6 = new Length(39.3701, LengthUnit.INCHES);
-            System.out.println("Are lengths equal? "+ l5.equals(l6));
+            Length l3 = new Length(100.0, LengthUnit.CENTIMETERS);
+            System.out.println("100 CM → FEET = " + l3.convertTo(LengthUnit.FEET));
         }
     }
 
