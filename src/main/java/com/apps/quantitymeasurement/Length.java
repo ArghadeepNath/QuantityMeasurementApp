@@ -55,6 +55,7 @@ public class Length {
             if (Double.isNaN(this.value) || Double.isInfinite(this.value)) {
                 throw new IllegalArgumentException("Invalid value");
             }
+
             double convertedValue = this.value *
                     (this.unit.getConversionFactor() / unit.getConversionFactor());
 
@@ -62,6 +63,26 @@ public class Length {
 
             return new Length(convertedValue, unit);
         }
+
+    public static double convert(double value, LengthUnit source, LengthUnit target) {
+
+        if (source == null || target == null) {
+            throw new IllegalArgumentException("Units cannot be null");
+        }
+
+        if (Double.isNaN(value) || Double.isInfinite(value)) {
+            throw new IllegalArgumentException("Invalid value");
+        }
+
+        double convertedValue = value *
+                (source.getConversionFactor() / target.getConversionFactor());
+
+        convertedValue = Math.round(convertedValue * 100.0) / 100.0;
+
+        return convertedValue;
+    }
+
+
 
     @Override
     public String toString() {
