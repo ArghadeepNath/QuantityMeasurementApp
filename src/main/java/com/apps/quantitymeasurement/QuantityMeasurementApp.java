@@ -37,8 +37,7 @@ public class QuantityMeasurementApp {
         return result;
     }
     public static Length demonstrateLengthAddition(Length l1, Length l2, Length.LengthUnit targetUnit) {
-        double resultValue = Length.add(l1, l2, targetUnit);
-        Length result = new Length(resultValue, targetUnit);
+        Length result = l1.add(l2,targetUnit);
 
         System.out.println(l1 + " + " + l2 + " → " + result);
 
