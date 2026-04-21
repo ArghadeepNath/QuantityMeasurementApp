@@ -41,6 +41,55 @@ public class QuantityMeasurementApp {
         return result;
     }
 
+    public static boolean demonstrateWeightEquality(Weight w1, Weight w2){
+        return w1.equals(w2);
+    }
+
+    private static void demonstrateWeightComparison(double v1, WeightUnit unit1,
+                                                    double v2, WeightUnit unit2) {
+        Weight w1 = new Weight(v1, unit1);
+        Weight w2 = new Weight(v2, unit2);
+
+        boolean result = w1.equals(w2);
+
+        System.out.println(v1 + " " + unit1 + " vs " +
+                v2 + " " + unit2 + " → " + result);
+    }
+
+    public static Weight demonstrateWeightConversion(double value,
+                                                     WeightUnit fromUnit,
+                                                     WeightUnit toUnit) {
+        Weight weight = new Weight(value, fromUnit);
+        Weight result = weight.convertTo(toUnit);
+
+        System.out.println(value + " " + fromUnit + " → " + result);
+        return result;
+    }
+
+    public static Weight demonstrateWeightConversion(Weight weight,
+                                                     WeightUnit toUnit) {
+        Weight result = weight.convertTo(toUnit);
+
+        System.out.println(weight + " → " + result);
+        return result;
+    }
+
+    public static Weight demonstrateWeightAddition(Weight w1, Weight w2){
+        Weight result = w1.add(w2);
+
+        System.out.println(w1 + " + " + w2 + " → " + result);
+        return result;
+    }
+
+    public static Weight demonstrateWeightAddition(Weight w1, Weight w2,
+                                                   WeightUnit targetUnit) {
+        Weight result = w1.add(w2, targetUnit);
+
+        System.out.println(w1 + " + " + w2 + " → " + result);
+        return result;
+    }
+
+
     public static void main(String[] args) {
 
         demonstrateLengthConversion(1.0, LengthUnit.FEET, LengthUnit.INCHES);
@@ -55,5 +104,26 @@ public class QuantityMeasurementApp {
 
         demonstrateLengthAddition(l1, l2);
         demonstrateLengthAddition(l1, l2, LengthUnit.FEET);
+
+        // Weight Conversion
+        demonstrateWeightConversion(1.0, WeightUnit.KILOGRAM, WeightUnit.GRAM);
+        demonstrateWeightConversion(500.0, WeightUnit.GRAM, WeightUnit.POUND);
+
+        Weight w = new Weight(2.0, WeightUnit.POUND);
+        demonstrateWeightConversion(w, WeightUnit.KILOGRAM);
+
+        // Weight Comparison
+        demonstrateWeightComparison(1.0, WeightUnit.KILOGRAM,
+                1000.0, WeightUnit.GRAM);
+
+        demonstrateWeightComparison(2.0, WeightUnit.POUND,
+                907.184, WeightUnit.GRAM);
+
+        //  Weight Addition
+        Weight w1 = new Weight(1.0, WeightUnit.KILOGRAM);
+        Weight w2 = new Weight(500.0, WeightUnit.GRAM);
+
+        demonstrateWeightAddition(w1, w2);
+        demonstrateWeightAddition(w1, w2, WeightUnit.GRAM);
     }
 }
