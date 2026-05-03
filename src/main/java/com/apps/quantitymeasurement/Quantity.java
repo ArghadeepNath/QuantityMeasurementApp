@@ -53,8 +53,10 @@ public class Quantity<U extends IMeasurable> {
         return performOperation(other, targetUnit, ArithmeticOperation.SUBTRACT, true);
     }
 
-    public double divide(Quantity<U> other) {
-        validateOperands(other, null, false);
+    public double divide(Quantity<U> other) {validateOperands(other, null, false);
+
+        unit.validateOperationSupport("DIVIDE");
+        other.unit.validateOperationSupport("DIVIDE");
 
         double a = unit.convertToBaseUnit(this.value);
         double b = other.unit.convertToBaseUnit(other.value);
@@ -97,9 +99,12 @@ public class Quantity<U extends IMeasurable> {
             throw new IllegalArgumentException("Invalid values");
     }
 
-    private Quantity<U> performOperation(Quantity<U> other, U targetUnit, ArithmeticOperation operation, boolean roundResult) {
+    private Quantity<U> performOperation(Quantity<U> other, U targetUnit,ArithmeticOperation operation, boolean roundResult) {
 
         validateOperands(other, targetUnit, true);
+
+        unit.validateOperationSupport(operation.name());
+        other.unit.validateOperationSupport(operation.name());
 
         double a = unit.convertToBaseUnit(this.value);
         double b = other.unit.convertToBaseUnit(other.value);
@@ -133,9 +138,9 @@ public class Quantity<U extends IMeasurable> {
         }
 
         double a = this.getUnit().convertToBaseUnit(this.getValue());
-        double b = other.getUnit().convertToBaseUnit((other.getValue()));
+        double b = other.getUnit().convertToBaseUnit(other.getValue());
 
-        return Double.compare(a, b) == 0;
+        return Math.abs(a - b) < 0.0001;
     }
 
     @Override

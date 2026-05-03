@@ -92,5 +92,17 @@ public class QuantityMeasurementApp {
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
+
+        Quantity<TemperatureUnit> t1 = new Quantity<>(0.0, TemperatureUnit.CELSIUS);
+        Quantity<TemperatureUnit> t2 = new Quantity<>(32.0, TemperatureUnit.FAHRENHEIT);
+
+        System.out.println(t1.equals(t2)); // true
+        System.out.println(t1.convertTo(TemperatureUnit.KELVIN)); // 273.15
+
+        try {
+            System.out.println(t1.add(t2));
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
     }
 }
