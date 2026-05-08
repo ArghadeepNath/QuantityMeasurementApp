@@ -1,14 +1,15 @@
-package com.apps.quantitymeasurement;
+package com.apps.quantitymeasurement.unit;
 
-public enum VolumeUnit implements IMeasurable {
+public enum LengthUnit implements IMeasurable {
 
-    LITRE(1.0),
-    MILLILITRE(0.001),
-    GALLON(3.78541);
+    FEET(12.0),
+    INCHES(1.0),
+    YARDS(36.0),
+    CENTIMETERS(0.393701);
 
     private final double conversionFactor;
 
-    VolumeUnit(double conversionFactor) {
+    LengthUnit(double conversionFactor) {
         this.conversionFactor = conversionFactor;
     }
 
@@ -26,4 +27,5 @@ public enum VolumeUnit implements IMeasurable {
     public double convertFromBaseUnit(double baseValue) {
         return baseValue / conversionFactor;
     }
+
 }
