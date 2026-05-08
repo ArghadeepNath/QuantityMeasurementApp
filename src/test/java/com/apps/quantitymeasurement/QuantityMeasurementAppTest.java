@@ -1,1267 +1,731 @@
 package com.apps.quantitymeasurement;
 
+import com.apps.quantitymeasurement.dto.QuantityDTO;
+import com.apps.quantitymeasurement.entity.QuantityEntity;
+import com.apps.quantitymeasurement.repository.InMemoryQuantityRepository;
+import com.apps.quantitymeasurement.repository.QuantityRepository;
+import com.apps.quantitymeasurement.service.QuantityService;
+import com.apps.quantitymeasurement.model.QuantityModel;
+import com.apps.quantitymeasurement.unit.*;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.*;
 
-import com.apps.quantitymeasurement.Length;
-import com.apps.quantitymeasurement.LengthUnit;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 public class QuantityMeasurementAppTest {
 
-//    // UC1 - FEET
-//
-//    @Test
-//    void givenSameFeetValueFeet_shouldReturnTrue() {
-//        Feet f1 = new Feet(1.0);
-//        Feet f2 = new Feet(1.0);
-//        assertTrue(f1.equals(f2));
-//    }
-//
-//    @Test
-//    void givenDifferentFeetValueFeet_shouldReturnFalse() {
-//        Feet f1 = new Feet(1.0);
-//        Feet f2 = new Feet(2.0);
-//        assertFalse(f1.equals(f2));
-//    }
-//
-//    @Test
-//    void givenSameReferenceFeet_shouldReturnTrue() {
-//        Feet f1 = new Feet(1.0);
-//        assertTrue(f1.equals(f1));
-//    }
-//
-//    @Test
-//    void givenNullFeet_shouldReturnFalse() {
-//        Feet f1 = new Feet(1.0);
-//        assertFalse(f1.equals(null));
-//    }
-//
-//    @Test
-//    void givenDifferentTypeFeet_shouldReturnFalse() {
-//        Feet f1 = new Feet(1.0);
-//        assertFalse(f1.equals(new Object()));
-//    }
-//
-//    @Test
-//    void equalsFeet_shouldBeReflexive() {
-//        Feet f = new Feet(2.5);
-//        assertTrue(f.equals(f));
-//    }
-//
-//    @Test
-//    void equalsFeet_shouldBeSymmetric() {
-//        Feet f1 = new Feet(3.0);
-//        Feet f2 = new Feet(3.0);
-//        assertTrue(f1.equals(f2));
-//        assertTrue(f2.equals(f1));
-//    }
-//
-//    @Test
-//    void equalsFeet_shouldBeTransitive() {
-//        Feet f1 = new Feet(4.0);
-//        Feet f2 = new Feet(4.0);
-//        Feet f3 = new Feet(4.0);
-//        assertTrue(f1.equals(f2));
-//        assertTrue(f2.equals(f3));
-//        assertTrue(f1.equals(f3));
-//    }
-//
-//    @Test
-//    void equalsFeet_shouldBeConsistent() {
-//        Feet f1 = new Feet(5.0);
-//        Feet f2 = new Feet(5.0);
-//        assertTrue(f1.equals(f2));
-//        assertTrue(f1.equals(f2));
-//    }
-//
-//    @Test
-//    void givenFloatingPointPrecisionFeet_shouldCompareCorrectly() {
-//        Feet f1 = new Feet(0.1 + 0.2);
-//        Feet f2 = new Feet(0.3);
-//        assertTrue(f1.equals(f2));
-//    }
-//
-//    @Test
-//    void equalFeetObjects_shouldHaveSameHashCode() {
-//        Feet f1 = new Feet(6.0);
-//        Feet f2 = new Feet(6.0);
-//        assertEquals(f1.hashCode(), f2.hashCode());
-//    }
-//
-//    @Test
-//    void givenNegativeFeetValues_shouldCompareCorrectly() {
-//        Feet f1 = new Feet(-2.0);
-//        Feet f2 = new Feet(-2.0);
-//        assertTrue(f1.equals(f2));
-//    }
-//
-//    @Test
-//    void givenZeroFeetValue_shouldCompareCorrectly() {
-//        Feet f1 = new Feet(0.0);
-//        Feet f2 = new Feet(0.0);
-//        assertTrue(f1.equals(f2));
-//    }
-//
-//    // UC2 - INCHES
-//
-//    @Test
-//    void givenSameInchesValueInches_shouldReturnTrue() {
-//        Inches f1 = new Inches(1.0);
-//        Inches f2 = new Inches(1.0);
-//        assertTrue(f1.equals(f2));
-//    }
-//
-//    @Test
-//    void givenDifferentInchesValueInches_shouldReturnFalse() {
-//        Inches f1 = new Inches(1.0);
-//        Inches f2 = new Inches(2.0);
-//        assertFalse(f1.equals(f2));
-//    }
-//
-//    @Test
-//    void givenSameInchesReferenceInches_shouldReturnTrue() {
-//        Inches f1 = new Inches(1.0);
-//        assertTrue(f1.equals(f1));
-//    }
-//
-//    @Test
-//    void givenNullInches_shouldReturnFalse() {
-//        Inches f1 = new Inches(1.0);
-//        assertFalse(f1.equals(null));
-//    }
-//
-//    @Test
-//    void givenDifferentTypeInches_shouldReturnFalse() {
-//        Inches f1 = new Inches(1.0);
-//        assertFalse(f1.equals(new Object()));
-//    }
-//
-//    @Test
-//    void equalsInches_shouldBeReflexive() {
-//        Inches f = new Inches(2.5);
-//        assertTrue(f.equals(f));
-//    }
-//
-//    @Test
-//    void equalsInches_shouldBeSymmetric() {
-//        Inches f1 = new Inches(3.0);
-//        Inches f2 = new Inches(3.0);
-//        assertTrue(f1.equals(f2));
-//        assertTrue(f2.equals(f1));
-//    }
-//
-//    @Test
-//    void equalsInches_shouldBeTransitive() {
-//        Inches f1 = new Inches(4.0);
-//        Inches f2 = new Inches(4.0);
-//        Inches f3 = new Inches(4.0);
-//        assertTrue(f1.equals(f2));
-//        assertTrue(f2.equals(f3));
-//        assertTrue(f1.equals(f3));
-//    }
-//
-//    @Test
-//    void equalsInches_shouldBeConsistent() {
-//        Inches f1 = new Inches(5.0);
-//        Inches f2 = new Inches(5.0);
-//        assertTrue(f1.equals(f2));
-//        assertTrue(f1.equals(f2));
-//    }
-//
-//    @Test
-//    void equalInchesObjects_shouldHaveSameHashCode() {
-//        Inches f1 = new Inches(6.0);
-//        Inches f2 = new Inches(6.0);
-//        assertEquals(f1.hashCode(), f2.hashCode());
-//    }
-//
-//    @Test
-//    void givenNegativeInchesValues_shouldCompareCorrectly() {
-//        Inches f1 = new Inches(-2.0);
-//        Inches f2 = new Inches(-2.0);
-//        assertTrue(f1.equals(f2));
-//    }
-//
-//    @Test
-//    void givenZeroInchesValue_shouldCompareCorrectly() {
-//        Inches f1 = new Inches(0.0);
-//        Inches f2 = new Inches(0.0);
-//        assertTrue(f1.equals(f2));
-//    }
-
-    //UC3
-
-    // 1. Same unit (Feet)
-    @Test
-    void givenSameFeetValue_shouldReturnTrue() {
-        Length l1 = new Length(1.0, LengthUnit.FEET);
-        Length l2 = new Length(1.0, LengthUnit.FEET);
-
-        assertTrue(l1.equals(l2));
-    }
-
-    // 2. Same unit (Inches)
-    @Test
-    void givenSameInchesValue_shouldReturnTrue() {
-        Length l1 = new Length(12.0, LengthUnit.INCHES);
-        Length l2 = new Length(12.0, LengthUnit.INCHES);
-
-        assertTrue(l1.equals(l2));
-    }
-
-    // 🔥 3. Cross-unit equality (CORE UC3)
-    @Test
-    void givenFeetAndInchesEquivalent_shouldReturnTrue() {
-        Length l1 = new Length(1.0, LengthUnit.FEET);
-        Length l2 = new Length(12.0, LengthUnit.INCHES);
-
-        assertTrue(l1.equals(l2));
-    }
-
-    // 4. Cross-unit inequality
-    @Test
-    void givenFeetAndInchesNotEquivalent_shouldReturnFalse() {
-        Length l1 = new Length(1.0, LengthUnit.FEET);
-        Length l2 = new Length(10.0, LengthUnit.INCHES);
-
-        assertFalse(l1.equals(l2));
-    }
-
-    // 5. Same unit inequality (Feet)
-    @Test
-    void givenDifferentFeetValues_shouldReturnFalse() {
-        Length l1 = new Length(1.0, LengthUnit.FEET);
-        Length l2 = new Length(2.0, LengthUnit.FEET);
-
-        assertFalse(l1.equals(l2));
-    }
-
-    // 6. Same unit inequality (Inches)
-    @Test
-    void givenDifferentInchesValues_shouldReturnFalse() {
-        Length l1 = new Length(12.0, LengthUnit.INCHES);
-        Length l2 = new Length(24.0, LengthUnit.INCHES);
-
-        assertFalse(l1.equals(l2));
-    }
-
-    // 7. Reflexive property
-    @Test
-    void equals_shouldBeReflexive() {
-        Length l = new Length(5.0, LengthUnit.FEET);
-
-        assertTrue(l.equals(l));
-    }
-
-    // 8. Symmetric property
-    @Test
-    void equals_shouldBeSymmetric() {
-        Length l1 = new Length(1.0, LengthUnit.FEET);
-        Length l2 = new Length(12.0, LengthUnit.INCHES);
-
-        assertTrue(l1.equals(l2));
-        assertTrue(l2.equals(l1));
-    }
-
-    // 9. Transitive property
-    @Test
-    void equals_shouldBeTransitive() {
-        Length l1 = new Length(1.0, LengthUnit.FEET);
-        Length l2 = new Length(12.0, LengthUnit.INCHES);
-        Length l3 = new Length(1.0, LengthUnit.FEET);
-
-        assertTrue(l1.equals(l2));
-        assertTrue(l2.equals(l3));
-        assertTrue(l1.equals(l3));
-    }
-
-    // 10. Null check
-    @Test
-    void givenNull_shouldReturnFalse() {
-        Length l = new Length(1.0, LengthUnit.FEET);
-
-        assertFalse(l.equals(null));
-    }
-
-    // 11. Different type
-    @Test
-    void givenDifferentType_shouldReturnFalse() {
-        Length l = new Length(1.0, LengthUnit.FEET);
-
-        assertFalse(l.equals(new Object()));
-    }
-
-    // 12. Zero value
-    @Test
-    void givenZeroValue_shouldReturnTrue() {
-        Length l1 = new Length(0.0, LengthUnit.FEET);
-        Length l2 = new Length(0.0, LengthUnit.INCHES);
-
-        assertTrue(l1.equals(l2));
-    }
-
-    // 13. Negative values
-    @Test
-    void givenNegativeValues_shouldCompareCorrectly() {
-        Length l1 = new Length(-1.0, LengthUnit.FEET);
-        Length l2 = new Length(-12.0, LengthUnit.INCHES);
-
-        assertTrue(l1.equals(l2));
-    }
-
-    //UC4
-
-    // 1
-    @Test
-    void testEquality_YardToYard_SameValue() {
-        assertTrue(new Length(1.0, LengthUnit.YARDS)
-                .equals(new Length(1.0, LengthUnit.YARDS)));
-    }
-
-    // 2
-    @Test
-    void testEquality_YardToYard_DifferentValue() {
-        assertFalse(new Length(1.0, LengthUnit.YARDS)
-                .equals(new Length(2.0, LengthUnit.YARDS)));
-    }
+    private QuantityService service;
 
-    // 3
-    @Test
-    void testEquality_YardToFeet_EquivalentValue() {
-        assertTrue(new Length(1.0, LengthUnit.YARDS)
-                .equals(new Length(3.0, LengthUnit.FEET)));
-    }
-
-    // 4
-    @Test
-    void testEquality_FeetToYard_EquivalentValue() {
-        assertTrue(new Length(3.0, LengthUnit.FEET)
-                .equals(new Length(1.0, LengthUnit.YARDS)));
-    }
-
-    // 5
-    @Test
-    void testEquality_YardToInches_EquivalentValue() {
-        assertTrue(new Length(1.0, LengthUnit.YARDS)
-                .equals(new Length(36.0, LengthUnit.INCHES)));
-    }
-
-    // 6
-    @Test
-    void testEquality_InchesToYard_EquivalentValue() {
-        assertTrue(new Length(36.0, LengthUnit.INCHES)
-                .equals(new Length(1.0, LengthUnit.YARDS)));
-    }
-
-    // 7
-    @Test
-    void testEquality_YardToFeet_NonEquivalentValue() {
-        assertFalse(new Length(1.0, LengthUnit.YARDS)
-                .equals(new Length(2.0, LengthUnit.FEET)));
-    }
-
-    // 8
-    @Test
-    void testEquality_centimetersToInches_EquivalentValue() {
-        assertTrue(new Length(1.0, LengthUnit.CENTIMETERS)
-                .equals(new Length(0.393701, LengthUnit.INCHES)));
-    }
-
-    // 9
-    @Test
-    void testEquality_centimetersToFeet_NonEquivalentValue() {
-        assertFalse(new Length(1.0, LengthUnit.CENTIMETERS)
-                .equals(new Length(1.0, LengthUnit.FEET)));
-    }
-
-    // 10 (Transitive)
-    @Test
-    void testEquality_MultiUnit_TransitiveProperty() {
-        Length a = new Length(1.0, LengthUnit.YARDS);
-        Length b = new Length(3.0, LengthUnit.FEET);
-        Length c = new Length(36.0, LengthUnit.INCHES);
-
-        assertTrue(a.equals(b));
-        assertTrue(b.equals(c));
-        assertTrue(a.equals(c));
-    }
-
-    // 11 (Null unit yard)
-    @Test
-    void testEquality_YardWithNullUnit() {
-        Length l = new Length(1.0, null);
-        Length l2 = new Length(1.0, LengthUnit.YARDS);
-
-        assertThrows(NullPointerException.class, () -> l.equals(l2));
-    }
-
-    // 12 (Reflexive yard)
-    @Test
-    void testEquality_YardSameReference() {
-        Length l = new Length(1.0, LengthUnit.YARDS);
-        assertTrue(l.equals(l));
-    }
-
-    // 13 (Null comparison yard)
-    @Test
-    void testEquality_YardNullComparison() {
-        Length l = new Length(1.0, LengthUnit.YARDS);
-        assertFalse(l.equals(null));
-    }
-
-    // 14 (Null unit cm)
-    @Test
-    void testEquality_CentimetersWithNullUnit() {
-        Length l = new Length(1.0, null);
-        Length l2 = new Length(1.0, LengthUnit.CENTIMETERS);
-
-        assertThrows(IllegalArgumentException.class, () -> l.equals(l2));
-    }
-
-    // 15 (Reflexive cm)
-    @Test
-    void testEquality_CentimetersSameReference() {
-        Length l = new Length(1.0, LengthUnit.CENTIMETERS);
-        assertTrue(l.equals(l));
-    }
-
-    // 16 (Null comparison cm)
-    @Test
-    void testEquality_CentimetersNullComparison() {
-        Length l = new Length(1.0, LengthUnit.CENTIMETERS);
-        assertFalse(l.equals(null));
-    }
-
-    // 17 (Complex multi-unit)
-    @Test
-    void testEquality_AllUnits_ComplexScenario() {
-        Length a = new Length(2.0, LengthUnit.YARDS);
-        Length b = new Length(6.0, LengthUnit.FEET);
-        Length c = new Length(72.0, LengthUnit.INCHES);
+    @BeforeEach
+    void setUp() {
+        QuantityRepository repository =
+                new InMemoryQuantityRepository();
 
-        assertTrue(a.equals(b));
-        assertTrue(b.equals(c));
-        assertTrue(a.equals(c));
-    }
-
-    //UC5
-
-    @Test
-    void centimeterEquals39Point3701Inches() {
-        assertTrue(new Length(100.0, LengthUnit.CENTIMETERS)
-                .equals(new Length(39.3701, LengthUnit.INCHES)));
+        service = new QuantityService(repository);
     }
 
-    @Test
-    void testFeetInchesComparison() {
-        assertTrue(new Length(1.0, LengthUnit.FEET)
-                .equals(new Length(12.0, LengthUnit.INCHES)));
-    }
+    // ---------------- EQUALITY TESTS ----------------
 
     @Test
-    void testInchesInequality() {
-        assertFalse(new Length(12.0, LengthUnit.INCHES)
-                .equals(new Length(10.0, LengthUnit.INCHES)));
-    }
+    void shouldReturnTrueForFeetAndInches() {
+        QuantityModel<LengthUnit> q1 =
+                new QuantityModel<>(1, LengthUnit.FEET);
 
-    @Test
-    void differentValuesSameUnitNotEqual() {
-        assertFalse(new Length(2.0, LengthUnit.FEET)
-                .equals(new Length(3.0, LengthUnit.FEET)));
-    }
+        QuantityModel<LengthUnit> q2 =
+                new QuantityModel<>(12, LengthUnit.INCHES);
 
-    @Test
-    void crossUnitEqualityDemonstrateMethod() {
-        assertTrue(new Length(1.0, LengthUnit.YARDS)
-                .equals(new Length(36.0, LengthUnit.INCHES)));
+        assertTrue(service.areEqual(q1, q2));
     }
 
     @Test
-    void testFeetEquality() {
-        assertTrue(new Length(5.0, LengthUnit.FEET)
-                .equals(new Length(5.0, LengthUnit.FEET)));
-    }
+    void shouldReturnTrueForYardsAndFeet() {
+        QuantityModel<LengthUnit> q1 =
+                new QuantityModel<>(1, LengthUnit.YARDS);
 
-    @Test
-    void testFeetInequality() {
-        assertFalse(new Length(5.0, LengthUnit.FEET)
-                .equals(new Length(6.0, LengthUnit.FEET)));
-    }
+        QuantityModel<LengthUnit> q2 =
+                new QuantityModel<>(3, LengthUnit.FEET);
 
-    @Test
-    void yardNotEqualToInches() {
-        assertFalse(new Length(1.0, LengthUnit.YARDS)
-                .equals(new Length(30.0, LengthUnit.INCHES)));
+        assertTrue(service.areEqual(q1, q2));
     }
 
     @Test
-    void reflexiveSymmetricAndTransitiveProperty() {
-        Length a = new Length(1.0, LengthUnit.YARDS);
-        Length b = new Length(3.0, LengthUnit.FEET);
-        Length c = new Length(36.0, LengthUnit.INCHES);
-
-        // Reflexive
-        assertTrue(a.equals(a));
+    void shouldReturnFalseForDifferentLengths() {
+        QuantityModel<LengthUnit> q1 =
+                new QuantityModel<>(1, LengthUnit.FEET);
 
-        // Symmetric
-        assertTrue(a.equals(b));
-        assertTrue(b.equals(a));
+        QuantityModel<LengthUnit> q2 =
+                new QuantityModel<>(11, LengthUnit.INCHES);
 
-        // Transitive
-        assertTrue(a.equals(b));
-        assertTrue(b.equals(c));
-        assertTrue(a.equals(c));
+        assertFalse(service.areEqual(q1, q2));
     }
 
     @Test
-    void testCrossUnitInequality() {
-        assertFalse(new Length(1.0, LengthUnit.FEET)
-                .equals(new Length(10.0, LengthUnit.INCHES)));
-    }
-
-    @Test
-    void testMultipleFeetComparison() {
-        assertTrue(new Length(3.0, LengthUnit.FEET)
-                .equals(new Length(1.0, LengthUnit.YARDS)));
-    }
+    void shouldReturnTrueForKilogramAndGram() {
+        QuantityModel<WeightUnit> q1 =
+                new QuantityModel<>(1, WeightUnit.KILOGRAM);
 
-    @Test
-    void yardEquals36Inches() {
-        assertTrue(new Length(1.0, LengthUnit.YARDS)
-                .equals(new Length(36.0, LengthUnit.INCHES)));
-    }
+        QuantityModel<WeightUnit> q2 =
+                new QuantityModel<>(1000, WeightUnit.GRAM);
 
-    @Test
-    void convertYardsToInchesUsingOverloadedMethod() {
-        Length l = new Length(1.0, LengthUnit.YARDS);
-        assertTrue(l.convertTo(LengthUnit.INCHES)
-                .equals(new Length(36.0, LengthUnit.INCHES)));
+        assertTrue(service.areEqual(q1, q2));
     }
 
     @Test
-    void thirtyPoint48CmEqualsOneFoot() {
-        assertTrue(new Length(30.48, LengthUnit.CENTIMETERS)
-                .equals(new Length(1.0, LengthUnit.FEET)));
-    }
+    void shouldReturnTrueForLitreAndMillilitre() {
+        QuantityModel<VolumeUnit> q1 =
+                new QuantityModel<>(1, VolumeUnit.LITRE);
 
-    @Test
-    void equalsReturnsFalseForNull() {
-        assertFalse(new Length(1.0, LengthUnit.FEET).equals(null));
-    }
+        QuantityModel<VolumeUnit> q2 =
+                new QuantityModel<>(1000, VolumeUnit.MILLILITRE);
 
-    @Test
-    void referenceEqualitySameObject() {
-        Length l = new Length(2.0, LengthUnit.FEET);
-        assertTrue(l.equals(l));
+        assertTrue(service.areEqual(q1, q2));
     }
 
     @Test
-    void threeFeetEqualsOneYard() {
-        assertTrue(new Length(3.0, LengthUnit.FEET)
-                .equals(new Length(1.0, LengthUnit.YARDS)));
-    }
+    void shouldReturnTrueForTemperatureEquality() {
+        QuantityModel<TemperatureUnit> t1 =
+                new QuantityModel<>(0, TemperatureUnit.CELSIUS);
 
-    @Test
-    void testInchesEquality() {
-        assertTrue(new Length(12.0, LengthUnit.INCHES)
-                .equals(new Length(12.0, LengthUnit.INCHES)));
-    }
+        QuantityModel<TemperatureUnit> t2 =
+                new QuantityModel<>(32, TemperatureUnit.FAHRENHEIT);
 
-    @Test
-    void convertFeetToInches() {
-        Length l = new Length(1.0, LengthUnit.FEET);
-        assertTrue(l.convertTo(LengthUnit.INCHES)
-                .equals(new Length(12.0, LengthUnit.INCHES)));
+        assertTrue(service.areEqual(t1, t2));
     }
-
 
-    //UC6
-
     @Test
-    void testAddition_SameUnit_FeetPlusFeet() {
-        Length l1 = new Length(1.0, LengthUnit.FEET);
-        Length l2 = new Length(2.0, LengthUnit.FEET);
+    void shouldReturnFalseForDifferentTemperatures() {
+        QuantityModel<TemperatureUnit> t1 =
+                new QuantityModel<>(0, TemperatureUnit.CELSIUS);
 
-        Length result = l1.add(l2);
+        QuantityModel<TemperatureUnit> t2 =
+                new QuantityModel<>(40, TemperatureUnit.FAHRENHEIT);
 
-        assertEquals(3.0, result.convertTo(LengthUnit.FEET).value);
+        assertFalse(service.areEqual(t1, t2));
     }
 
     @Test
-    void testAddition_SameUnit_InchPlusInch() {
-        Length l1 = new Length(6.0, LengthUnit.INCHES);
-        Length l2 = new Length(6.0, LengthUnit.INCHES);
+    void shouldReturnTrueForSameValues() {
+        QuantityModel<LengthUnit> q1 =
+                new QuantityModel<>(5, LengthUnit.FEET);
 
-        Length result = l1.add(l2);
+        QuantityModel<LengthUnit> q2 =
+                new QuantityModel<>(5, LengthUnit.FEET);
 
-        assertEquals(12.0, result.convertTo(LengthUnit.INCHES).value);
+        assertTrue(service.areEqual(q1, q2));
     }
 
     @Test
-    void testAddition_CrossUnit_FeetPlusInches() {
-        Length l1 = new Length(1.0, LengthUnit.FEET);
-        Length l2 = new Length(12.0, LengthUnit.INCHES);
+    void shouldReturnFalseForDifferentUnits() {
+        QuantityModel<LengthUnit> q1 =
+                new QuantityModel<>(5, LengthUnit.FEET);
 
-        Length result = l1.add(l2);
+        QuantityModel<LengthUnit> q2 =
+                new QuantityModel<>(6, LengthUnit.FEET);
 
-        assertEquals(2.0, result.convertTo(LengthUnit.FEET).value);
+        assertFalse(service.areEqual(q1, q2));
     }
 
     @Test
-    void testAddition_CrossUnit_InchPlusFeet() {
-        Length l1 = new Length(12.0, LengthUnit.INCHES);
-        Length l2 = new Length(1.0, LengthUnit.FEET);
+    void shouldHandleZeroEquality() {
+        QuantityModel<LengthUnit> q1 =
+                new QuantityModel<>(0, LengthUnit.FEET);
 
-        Length result = l1.add(l2);
+        QuantityModel<LengthUnit> q2 =
+                new QuantityModel<>(0, LengthUnit.INCHES);
 
-        assertEquals(24.0, result.convertTo(LengthUnit.INCHES).value);
+        assertTrue(service.areEqual(q1, q2));
     }
-
-    @Test
-    void testAddition_CrossUnit_YardPlusFeet() {
-        Length l1 = new Length(1.0, LengthUnit.YARDS);
-        Length l2 = new Length(3.0, LengthUnit.FEET);
-
-        Length result = l1.add(l2);
 
-        assertEquals(2.0, result.convertTo(LengthUnit.YARDS).value);
-    }
+    // ---------------- CONVERSION TESTS ----------------
 
     @Test
-    void testAddition_CrossUnit_CentimeterPlusInch() {
-        Length l1 = new Length(2.54, LengthUnit.CENTIMETERS);
-        Length l2 = new Length(1.0, LengthUnit.INCHES);
-
-        Length result = l1.add(l2);
+    void shouldConvertFeetToInches() {
+        QuantityModel<LengthUnit> q =
+                new QuantityModel<>(1, LengthUnit.FEET);
 
-        assertEquals(5.08, result.convertTo(LengthUnit.CENTIMETERS).value);
-    }
-
-    @Test
-    void testAddition_Commutativity() {
-        Length l1 = new Length(1.0, LengthUnit.FEET);
-        Length l2 = new Length(12.0, LengthUnit.INCHES);
+        QuantityModel<LengthUnit> result =
+                service.convert(q, LengthUnit.INCHES);
 
-        assertEquals(l1.add(l2), l2.add(l1));
+        assertEquals(12.0, result.getValue());
     }
 
     @Test
-    void testAddition_WithZero() {
-        Length l1 = new Length(5.0, LengthUnit.FEET);
-        Length l2 = new Length(0.0, LengthUnit.INCHES);
+    void shouldConvertInchesToFeet() {
+        QuantityModel<LengthUnit> q =
+                new QuantityModel<>(24, LengthUnit.INCHES);
 
-        Length result = l1.add(l2);
+        QuantityModel<LengthUnit> result =
+                service.convert(q, LengthUnit.FEET);
 
-        assertEquals(5.0, result.convertTo(LengthUnit.FEET).value);
+        assertEquals(2.0, result.getValue());
     }
 
     @Test
-    void testAddition_NegativeValues() {
-        Length l1 = new Length(5.0, LengthUnit.FEET);
-        Length l2 = new Length(-2.0, LengthUnit.FEET);
-
-        Length result = l1.add(l2);
+    void shouldConvertYardsToFeet() {
+        QuantityModel<LengthUnit> q =
+                new QuantityModel<>(1, LengthUnit.YARDS);
 
-        assertEquals(3.0, result.convertTo(LengthUnit.FEET).value);
-    }
-
-    @Test
-    void testAddition_NullSecondOperand() {
-        Length l1 = new Length(1.0, LengthUnit.FEET);
+        QuantityModel<LengthUnit> result =
+                service.convert(q, LengthUnit.FEET);
 
-        assertThrows(IllegalArgumentException.class, () -> l1.add(null));
+        assertEquals(3.0, result.getValue());
     }
 
     @Test
-    void testAddition_LargeValues() {
-        Length l1 = new Length(1e6, LengthUnit.FEET);
-        Length l2 = new Length(1e6, LengthUnit.FEET);
+    void shouldConvertKilogramToGram() {
+        QuantityModel<WeightUnit> q =
+                new QuantityModel<>(1, WeightUnit.KILOGRAM);
 
-        Length result = l1.add(l2);
+        QuantityModel<WeightUnit> result =
+                service.convert(q, WeightUnit.GRAM);
 
-        assertEquals(2e6, result.convertTo(LengthUnit.FEET).value);
+        assertEquals(1000.0, result.getValue());
     }
 
     @Test
-    void testAddition_SmallValues() {
-        Length l1 = new Length(0.01, LengthUnit.FEET);
-        Length l2 = new Length(0.02, LengthUnit.FEET);
+    void shouldConvertGramToKilogram() {
+        QuantityModel<WeightUnit> q =
+                new QuantityModel<>(5000, WeightUnit.GRAM);
 
-        Length result = l1.add(l2);
+        QuantityModel<WeightUnit> result =
+                service.convert(q, WeightUnit.KILOGRAM);
 
-        assertEquals(0.03, result.convertTo(LengthUnit.FEET).value);
+        assertEquals(5.0, result.getValue());
     }
 
-
-    //UC7
-
     @Test
-    public void addFeetAndInchesWithTargetUnitInches() {
-        Length l1 = new Length(1.0, LengthUnit.FEET);
-        Length l2 = new Length(12.0, LengthUnit.INCHES);
+    void shouldConvertLitreToMillilitre() {
+        QuantityModel<VolumeUnit> q =
+                new QuantityModel<>(1, VolumeUnit.LITRE);
 
-        Length result = l1.add(l2, LengthUnit.INCHES);
+        QuantityModel<VolumeUnit> result =
+                service.convert(q, VolumeUnit.MILLILITRE);
 
-        assertEquals(24.0, result.value);
+        assertEquals(1000.0, result.getValue());
     }
 
     @Test
-    public void testAddition_ExplicitTargetUnit_Feet() {
-        Length l1 = new Length(1.0, LengthUnit.FEET);
-        Length l2 = new Length(12.0, LengthUnit.INCHES);
+    void shouldConvertFahrenheitToCelsius() {
+        QuantityModel<TemperatureUnit> q =
+                new QuantityModel<>(32, TemperatureUnit.FAHRENHEIT);
 
-        Length result = l1.add(l2, LengthUnit.FEET);
+        QuantityModel<TemperatureUnit> result =
+                service.convert(q, TemperatureUnit.CELSIUS);
 
-        assertEquals(2.0, result.value);
+        assertEquals(0.0, result.getValue());
     }
 
     @Test
-    public void testAddition_ExplicitTargetUnit_Inches() {
-        Length l1 = new Length(1.0, LengthUnit.FEET);
-        Length l2 = new Length(12.0, LengthUnit.INCHES);
+    void shouldConvertCelsiusToKelvin() {
+        QuantityModel<TemperatureUnit> q =
+                new QuantityModel<>(0, TemperatureUnit.CELSIUS);
 
-        Length result = l1.add(l2, LengthUnit.INCHES);
+        QuantityModel<TemperatureUnit> result =
+                service.convert(q, TemperatureUnit.KELVIN);
 
-        assertEquals(24.0, result.value);
+        assertEquals(273.15, result.getValue());
     }
 
     @Test
-    public void testAddition_ExplicitTargetUnit_Yards() {
-        Length l1 = new Length(1.0, LengthUnit.FEET);
-        Length l2 = new Length(12.0, LengthUnit.INCHES);
+    void shouldConvertKelvinToCelsius() {
+        QuantityModel<TemperatureUnit> q =
+                new QuantityModel<>(273.15, TemperatureUnit.KELVIN);
 
-        Length result = l1.add(l2, LengthUnit.YARDS);
+        QuantityModel<TemperatureUnit> result =
+                service.convert(q, TemperatureUnit.CELSIUS);
 
-        assertEquals(0.67, result.value);
+        assertEquals(0.0, result.getValue());
     }
 
     @Test
-    public void testAddition_ExplicitTargetUnit_Centimeters() {
-        Length l1 = new Length(1.0, LengthUnit.INCHES);
-        Length l2 = new Length(1.0, LengthUnit.INCHES);
+    void shouldConvertPoundsToGrams() {
+        QuantityModel<WeightUnit> q =
+                new QuantityModel<>(1, WeightUnit.POUND);
 
-        Length result = l1.add(l2, LengthUnit.CENTIMETERS);
+        QuantityModel<WeightUnit> result =
+                service.convert(q, WeightUnit.GRAM);
 
-        assertEquals(5.08, result.value);
+        assertEquals(453.59, result.getValue());
     }
-
-    @Test
-    public void testAddition_ExplicitTargetUnit_SameAsFirstOperand() {
-        Length l1 = new Length(2.0, LengthUnit.YARDS);
-        Length l2 = new Length(3.0, LengthUnit.FEET);
 
-        Length result = l1.add(l2, LengthUnit.YARDS);
+    // ---------------- ADDITION TESTS ----------------
 
-        assertEquals(3.0, result.value);
-    }
-
     @Test
-    public void testAddition_ExplicitTargetUnit_SameAsSecondOperand() {
-        Length l1 = new Length(2.0, LengthUnit.YARDS);
-        Length l2 = new Length(3.0, LengthUnit.FEET);
-
-        Length result = l1.add(l2, LengthUnit.FEET);
+    void shouldAddFeetAndInches() {
+        QuantityModel<LengthUnit> q1 =
+                new QuantityModel<>(1, LengthUnit.FEET);
 
-        assertEquals(9.0, result.value);
-    }
-
-    @Test
-    public void testAddition_ExplicitTargetUnit_Commutativity() {
-        Length l1 = new Length(1.0, LengthUnit.FEET);
-        Length l2 = new Length(12.0, LengthUnit.INCHES);
+        QuantityModel<LengthUnit> q2 =
+                new QuantityModel<>(12, LengthUnit.INCHES);
 
-        Length r1 = l1.add(l2, LengthUnit.YARDS);
-        Length r2 = l2.add(l1, LengthUnit.YARDS);
+        QuantityModel<LengthUnit> result =
+                service.add(q1, q2);
 
-        assertEquals(r1.value, r2.value);
+        assertEquals(2.0, result.getValue());
     }
 
     @Test
-    public void testAddition_ExplicitTargetUnit_WithZero() {
-        Length l1 = new Length(5.0, LengthUnit.FEET);
-        Length l2 = new Length(0.0, LengthUnit.INCHES);
-
-        Length result = l1.add(l2, LengthUnit.YARDS);
+    void shouldAddFeetAndFeet() {
+        QuantityModel<LengthUnit> q1 =
+                new QuantityModel<>(5, LengthUnit.FEET);
 
-        assertEquals(1.67, result.value);
-    }
-
-    @Test
-    public void testAddition_ExplicitTargetUnit_NegativeValues() {
-        Length l1 = new Length(5.0, LengthUnit.FEET);
-        Length l2 = new Length(-2.0, LengthUnit.FEET);
+        QuantityModel<LengthUnit> q2 =
+                new QuantityModel<>(5, LengthUnit.FEET);
 
-        Length result = l1.add(l2, LengthUnit.INCHES);
+        QuantityModel<LengthUnit> result =
+                service.add(q1, q2);
 
-        assertEquals(36.0, result.value);
+        assertEquals(10.0, result.getValue());
     }
 
     @Test
-    public void testAddition_ExplicitTargetUnit_NullTargetUnit() {
-        Length l1 = new Length(1.0, LengthUnit.FEET);
-        Length l2 = new Length(12.0, LengthUnit.INCHES);
+    void shouldAddKilograms() {
+        QuantityModel<WeightUnit> q1 =
+                new QuantityModel<>(1, WeightUnit.KILOGRAM);
 
-        assertThrows(IllegalArgumentException.class,
-                () -> l1.add(l2, null));
-    }
-
-    @Test
-    public void testAddition_ExplicitTargetUnit_LargeToSmallScale() {
-        Length l1 = new Length(1000.0, LengthUnit.FEET);
-        Length l2 = new Length(500.0, LengthUnit.FEET);
+        QuantityModel<WeightUnit> q2 =
+                new QuantityModel<>(2, WeightUnit.KILOGRAM);
 
-        Length result = l1.add(l2, LengthUnit.INCHES);
+        QuantityModel<WeightUnit> result =
+                service.add(q1, q2);
 
-        assertEquals(18000.0, result.value);
+        assertEquals(3.0, result.getValue());
     }
 
     @Test
-    public void testAddition_ExplicitTargetUnit_SmallToLargeScale() {
-        Length l1 = new Length(12.0, LengthUnit.INCHES);
-        Length l2 = new Length(12.0, LengthUnit.INCHES);
-
-        Length result = l1.add(l2, LengthUnit.YARDS);
+    void shouldAddLitres() {
+        QuantityModel<VolumeUnit> q1 =
+                new QuantityModel<>(1, VolumeUnit.LITRE);
 
-        assertEquals(0.67, result.value);
-    }
+        QuantityModel<VolumeUnit> q2 =
+                new QuantityModel<>(2, VolumeUnit.LITRE);
 
-    @Test
-    public void testAddition_ExplicitTargetUnit_AllUnitCombinations() {
-        Length[] values = {
-                new Length(1.0, LengthUnit.FEET),
-                new Length(12.0, LengthUnit.INCHES),
-                new Length(1.0, LengthUnit.YARDS),
-                new Length(2.54, LengthUnit.CENTIMETERS)
-        };
+        QuantityModel<VolumeUnit> result =
+                service.add(q1, q2);
 
-        for (Length a : values) {
-            for (Length b : values) {
-                for (LengthUnit target : LengthUnit.values()) {
-                    Length result = a.add(b, target);
-                    assertNotNull(result);
-                }
-            }
-        }
+        assertEquals(3.0, result.getValue());
     }
 
     @Test
-    public void testAddition_ExplicitTargetUnit_PrecisionTolerance() {
-        Length l1 = new Length(1.0, LengthUnit.FEET);
-        Length l2 = new Length(2.54, LengthUnit.CENTIMETERS);
-
-        Length result = l1.add(l2, LengthUnit.INCHES);
-
-        assertEquals(13.0, result.value);
-    }
+    void shouldAddMillilitresAndLitres() {
+        QuantityModel<VolumeUnit> q1 =
+                new QuantityModel<>(500, VolumeUnit.MILLILITRE);
 
-    //UC8
+        QuantityModel<VolumeUnit> q2 =
+                new QuantityModel<>(1, VolumeUnit.LITRE);
 
-    @Test
-    void testLengthUnitEnum_FeetConstant() {
-        assertEquals(12.0, LengthUnit.FEET.getConversionFactor());
-    }
+        QuantityModel<VolumeUnit> result =
+                service.add(q1, q2);
 
-    @Test
-    void testLengthUnitEnum_InchesConstant() {
-        assertEquals(1.0, LengthUnit.INCHES.getConversionFactor());
+        assertEquals(1500.0, result.getValue());
     }
 
     @Test
-    void testLengthUnitEnum_YardsConstant() {
-        assertEquals(36.0, LengthUnit.YARDS.getConversionFactor());
-    }
+    void shouldAddZeroCorrectly() {
+        QuantityModel<LengthUnit> q1 =
+                new QuantityModel<>(0, LengthUnit.FEET);
 
-    @Test
-    void testLengthUnitEnum_CentimetersConstant() {
-        assertEquals(0.393701, LengthUnit.CENTIMETERS.getConversionFactor(), 0.0001);
-    }
+        QuantityModel<LengthUnit> q2 =
+                new QuantityModel<>(5, LengthUnit.FEET);
 
-    @Test
-    void testConvertToBaseUnit_FeetToFeet() {
-        assertEquals(60.0, LengthUnit.FEET.convertToBaseUnit(5.0));
-    }
+        QuantityModel<LengthUnit> result =
+                service.add(q1, q2);
 
-    @Test
-    void testConvertToBaseUnit_InchesToFeet() {
-        assertEquals(12.0, LengthUnit.INCHES.convertToBaseUnit(12.0));
+        assertEquals(5.0, result.getValue());
     }
 
     @Test
-    void testConvertToBaseUnit_YardsToFeet() {
-        assertEquals(36.0, LengthUnit.YARDS.convertToBaseUnit(1.0));
-    }
+    void shouldAddNegativeValues() {
+        QuantityModel<LengthUnit> q1 =
+                new QuantityModel<>(-5, LengthUnit.FEET);
 
-    @Test
-    void testConvertToBaseUnit_CentimetersToFeet() {
-        assertEquals(12.0, LengthUnit.CENTIMETERS.convertToBaseUnit(30.48), 0.01);
-    }
+        QuantityModel<LengthUnit> q2 =
+                new QuantityModel<>(10, LengthUnit.FEET);
 
-    @Test
-    void testConvertFromBaseUnit_FeetToFeet() {
-        assertEquals(5.0, LengthUnit.FEET.convertFromBaseUnit(60.0));
-    }
+        QuantityModel<LengthUnit> result =
+                service.add(q1, q2);
 
-    @Test
-    void testConvertFromBaseUnit_FeetToInches() {
-        assertEquals(12.0, LengthUnit.INCHES.convertFromBaseUnit(12.0));
+        assertEquals(5.0, result.getValue());
     }
 
     @Test
-    void testConvertFromBaseUnit_FeetToYards() {
-        assertEquals(1.0, LengthUnit.YARDS.convertFromBaseUnit(36.0));
-    }
+    void shouldRoundAdditionResult() {
+        QuantityModel<LengthUnit> q1 =
+                new QuantityModel<>(1.333, LengthUnit.FEET);
 
-    @Test
-    void testConvertFromBaseUnit_FeetToCentimeters() {
-        assertEquals(30.48, LengthUnit.CENTIMETERS.convertFromBaseUnit(12.0), 0.01);
-    }
+        QuantityModel<LengthUnit> q2 =
+                new QuantityModel<>(1.333, LengthUnit.FEET);
 
-    @Test
-    void testQuantityLengthRefactored_Equality() {
-        Length l1 = new Length(1.0, LengthUnit.FEET);
-        Length l2 = new Length(12.0, LengthUnit.INCHES);
+        QuantityModel<LengthUnit> result =
+                service.add(q1, q2);
 
-        assertTrue(l1.equals(l2));
+        assertEquals(2.67, result.getValue());
     }
 
     @Test
-    void testQuantityLengthRefactored_ConvertTo() {
-        Length l = new Length(1.0, LengthUnit.FEET);
-        Length result = l.convertTo(LengthUnit.INCHES);
+    void shouldStoreAdditionHistory() {
+        QuantityModel<LengthUnit> q1 =
+                new QuantityModel<>(1, LengthUnit.FEET);
 
-        assertEquals(new Length(12.0, LengthUnit.INCHES), result);
-    }
+        QuantityModel<LengthUnit> q2 =
+                new QuantityModel<>(1, LengthUnit.FEET);
 
-    @Test
-    void testQuantityLengthRefactored_Add() {
-        Length l1 = new Length(1.0, LengthUnit.FEET);
-        Length l2 = new Length(12.0, LengthUnit.INCHES);
+        service.add(q1, q2);
 
-        Length result = l1.add(l2, LengthUnit.FEET);
+        List<QuantityEntity> history = service.getHistory();
 
-        assertEquals(new Length(2.0, LengthUnit.FEET), result);
+        assertEquals(1, history.size());
     }
 
     @Test
-    void testQuantityLengthRefactored_AddWithTargetUnit() {
-        Length l1 = new Length(1.0, LengthUnit.YARDS);
-        Length l2 = new Length(3.0, LengthUnit.FEET);
-
-        Length result = l1.add(l2, LengthUnit.YARDS);
-
-        assertEquals(new Length(2.0, LengthUnit.YARDS), result);
-    }
+    void shouldStoreCorrectOperationType() {
+        QuantityModel<LengthUnit> q1 =
+                new QuantityModel<>(1, LengthUnit.FEET);
 
-    @Test
-    void testQuantityLengthRefactored_NullUnit() {
-        assertThrows(IllegalArgumentException.class, () ->
-                new Length(1.0, null)
-        );
-    }
+        QuantityModel<LengthUnit> q2 =
+                new QuantityModel<>(1, LengthUnit.FEET);
 
-    @Test
-    void testQuantityLengthRefactored_InvalidValue() {
-        assertThrows(IllegalArgumentException.class, () ->
-                new Length(Double.NaN, LengthUnit.FEET)
-        );
-    }
+        service.add(q1, q2);
 
-    @Test
-    void testBackwardCompatibility_UC1EqualityTests() {
-        Length l1 = new Length(1.0, LengthUnit.FEET);
-        Length l2 = new Length(1.0, LengthUnit.FEET);
+        List<QuantityEntity> history = service.getHistory();
 
-        assertTrue(l1.equals(l2));
+        assertEquals("ADD", history.get(0).getOperation());
     }
-
-    @Test
-    void testBackwardCompatibility_UC5ConversionTests() {
-        Length l = new Length(1.0, LengthUnit.FEET);
-        Length result = l.convertTo(LengthUnit.INCHES);
 
-        assertEquals(new Length(12.0, LengthUnit.INCHES), result);
-    }
+    // ---------------- SUBTRACTION TESTS ----------------
 
     @Test
-    void testBackwardCompatibility_UC6AdditionTests() {
-        Length l1 = new Length(1.0, LengthUnit.FEET);
-        Length l2 = new Length(1.0, LengthUnit.FEET);
+    void shouldSubtractFeetCorrectly() {
+        QuantityModel<LengthUnit> q1 =
+                new QuantityModel<>(10, LengthUnit.FEET);
 
-        assertEquals(new Length(2.0, LengthUnit.FEET), l1.add(l2));
-    }
-
-    @Test
-    void testBackwardCompatibility_UC7AdditionWithTargetUnitTests() {
-        Length l1 = new Length(1.0, LengthUnit.FEET);
-        Length l2 = new Length(12.0, LengthUnit.INCHES);
+        QuantityModel<LengthUnit> q2 =
+                new QuantityModel<>(5, LengthUnit.FEET);
 
-        Length result = l1.add(l2, LengthUnit.INCHES);
+        QuantityModel<LengthUnit> result =
+                service.subtract(q1, q2);
 
-        assertEquals(new Length(24.0, LengthUnit.INCHES), result);
+        assertEquals(5.0, result.getValue());
     }
 
     @Test
-    void testRoundTripConversion_RefactoredDesign() {
-        double original = 10.0;
+    void shouldSubtractInchesFromFeet() {
+        QuantityModel<LengthUnit> q1 =
+                new QuantityModel<>(1, LengthUnit.FEET);
 
-        double converted = LengthUnit.FEET.convert(original, LengthUnit.YARDS);
-        double back = LengthUnit.YARDS.convert(converted, LengthUnit.FEET);
+        QuantityModel<LengthUnit> q2 =
+                new QuantityModel<>(6, LengthUnit.INCHES);
 
-        assertEquals(original, back, 0.01);
-    }
+        QuantityModel<LengthUnit> result =
+                service.subtract(q1, q2);
 
-    @Test
-    void testEnumImmutability() {
-        LengthUnit unit = LengthUnit.FEET;
-        assertNotNull(unit);
+        assertEquals(0.5, result.getValue());
     }
 
-    //UC9
-
     @Test
-    public void testWeight_KilogramEquals1000Grams() {
-        assertEquals(
-                new Weight(1.0, WeightUnit.KILOGRAM),
-                new Weight(1000.0, WeightUnit.GRAM)
-        );
-    }
+    void shouldSubtractLitres() {
+        QuantityModel<VolumeUnit> q1 =
+                new QuantityModel<>(5, VolumeUnit.LITRE);
 
-    @Test
-    public void testWeight_PoundEquals453Point592Grams() {
-        assertEquals(
-                new Weight(1.0, WeightUnit.POUND),
-                new Weight(453.592, WeightUnit.GRAM)
-        );
-    }
+        QuantityModel<VolumeUnit> q2 =
+                new QuantityModel<>(2, VolumeUnit.LITRE);
 
-    @Test
-    public void testWeight_TonneEquals1000000Grams() {
-        assertEquals(
-                new Weight(1.0, WeightUnit.TONNE),
-                new Weight(1_000_000.0, WeightUnit.GRAM)
-        );
-    }
+        QuantityModel<VolumeUnit> result =
+                service.subtract(q1, q2);
 
-    @Test
-    public void testWeight_KilogramNotEqualToPound() {
-        assertNotEquals(
-                new Weight(1.0, WeightUnit.KILOGRAM),
-                new Weight(1.0, WeightUnit.POUND)
-        );
+        assertEquals(3.0, result.getValue());
     }
 
     @Test
-    public void testWeight_AdditionOfWeightsEqualsExpected() {
-        Weight w1 = new Weight(1.0, WeightUnit.KILOGRAM);
-        Weight w2 = new Weight(1000.0, WeightUnit.GRAM);
+    void shouldSubtractKilograms() {
+        QuantityModel<WeightUnit> q1 =
+                new QuantityModel<>(10, WeightUnit.KILOGRAM);
 
-        assertEquals(new Weight(2.0, WeightUnit.KILOGRAM), w1.add(w2));
-    }
+        QuantityModel<WeightUnit> q2 =
+                new QuantityModel<>(5, WeightUnit.KILOGRAM);
 
-    // -------- Equality properties --------
+        QuantityModel<WeightUnit> result =
+                service.subtract(q1, q2);
 
-    @Test
-    public void testWeight_ReferenceEqualitySameObject() {
-        Weight w = new Weight(1.0, WeightUnit.KILOGRAM);
-        assertEquals(w, w);
+        assertEquals(5.0, result.getValue());
     }
 
     @Test
-    public void testWeight_EqualsReturnsFalseForNull() {
-        Weight w = new Weight(1.0, WeightUnit.KILOGRAM);
-        assertNotEquals(w, null);
-    }
+    void shouldSubtractToNegativeValue() {
+        QuantityModel<LengthUnit> q1 =
+                new QuantityModel<>(2, LengthUnit.FEET);
 
-    @Test
-    public void testWeight_ReflexiveSymmetricAndTransitiveProperty() {
-        Weight a = new Weight(1.0, WeightUnit.KILOGRAM);
-        Weight b = new Weight(1000.0, WeightUnit.GRAM);
-        Weight c = new Weight(1.0, WeightUnit.KILOGRAM);
+        QuantityModel<LengthUnit> q2 =
+                new QuantityModel<>(5, LengthUnit.FEET);
 
-        assertEquals(a, b);
-        assertEquals(b, c);
-        assertEquals(a, c);
-    }
+        QuantityModel<LengthUnit> result =
+                service.subtract(q1, q2);
 
-    @Test
-    public void testWeight_DifferentValuesSameUnitNotEqual() {
-        assertNotEquals(
-                new Weight(1.0, WeightUnit.KILOGRAM),
-                new Weight(2.0, WeightUnit.KILOGRAM)
-        );
+        assertEquals(-3.0, result.getValue());
     }
 
     @Test
-    public void testWeight_CrossUnitEquality() {
-        Weight w1 = new Weight(1.0, WeightUnit.KILOGRAM);
-        Weight w2 = new Weight(1000.0, WeightUnit.GRAM);
+    void shouldSubtractZeroCorrectly() {
+        QuantityModel<LengthUnit> q1 =
+                new QuantityModel<>(5, LengthUnit.FEET);
 
-        assertTrue(w1.equals(w2));
-    }
+        QuantityModel<LengthUnit> q2 =
+                new QuantityModel<>(0, LengthUnit.FEET);
 
-    // -------- Conversion --------
+        QuantityModel<LengthUnit> result =
+                service.subtract(q1, q2);
 
-    @Test
-    public void testWeight_ConvertKilogramToGram() {
-        Weight w = new Weight(1.0, WeightUnit.KILOGRAM);
-        assertEquals(
-                new Weight(1000.0, WeightUnit.GRAM),
-                w.convertTo(WeightUnit.GRAM)
-        );
+        assertEquals(5.0, result.getValue());
     }
 
     @Test
-    public void testWeight_ConvertPoundToKilogram() {
-        Weight w = new Weight(2.20462, WeightUnit.POUND);
-        Weight result = w.convertTo(WeightUnit.KILOGRAM);
-
-        assertEquals(new Weight(1.0, WeightUnit.KILOGRAM), result);
-    }
+    void shouldStoreSubtractionHistory() {
+        QuantityModel<LengthUnit> q1 =
+                new QuantityModel<>(5, LengthUnit.FEET);
 
-    @Test
-    public void testWeight_ConvertSameUnit() {
-        Weight w = new Weight(5.0, WeightUnit.KILOGRAM);
-        assertEquals(w, w.convertTo(WeightUnit.KILOGRAM));
-    }
+        QuantityModel<LengthUnit> q2 =
+                new QuantityModel<>(2, LengthUnit.FEET);
 
-    @Test
-    public void testWeight_ConvertZeroValue() {
-        Weight w = new Weight(0.0, WeightUnit.KILOGRAM);
-        assertEquals(
-                new Weight(0.0, WeightUnit.GRAM),
-                w.convertTo(WeightUnit.GRAM)
-        );
-    }
+        service.subtract(q1, q2);
 
-    @Test
-    public void testWeight_ConvertNegativeValue() {
-        Weight w = new Weight(-1.0, WeightUnit.KILOGRAM);
-        assertEquals(
-                new Weight(-1000.0, WeightUnit.GRAM),
-                w.convertTo(WeightUnit.GRAM)
-        );
+        assertEquals(1, service.getHistory().size());
     }
 
     @Test
-    public void testWeight_RoundTripConversion() {
-        Weight w = new Weight(1.5, WeightUnit.KILOGRAM);
-        Weight result = w.convertTo(WeightUnit.GRAM)
-                .convertTo(WeightUnit.KILOGRAM);
-
-        assertEquals(w, result);
-    }
+    void shouldStoreSubtractOperationType() {
+        QuantityModel<LengthUnit> q1 =
+                new QuantityModel<>(5, LengthUnit.FEET);
 
-    // -------- Addition --------
+        QuantityModel<LengthUnit> q2 =
+                new QuantityModel<>(2, LengthUnit.FEET);
 
-    @Test
-    public void testWeight_AddSameUnit() {
-        Weight w1 = new Weight(1.0, WeightUnit.KILOGRAM);
-        Weight w2 = new Weight(2.0, WeightUnit.KILOGRAM);
+        service.subtract(q1, q2);
 
         assertEquals(
-                new Weight(3.0, WeightUnit.KILOGRAM),
-                w1.add(w2)
+                "SUBTRACT",
+                service.getHistory().get(0).getOperation()
+        );
+    }
+
+    // ---------------- DIVISION TESTS ----------------
+
+    @Test
+    void shouldDivideFeetCorrectly() {
+        QuantityModel<LengthUnit> q1 =
+                new QuantityModel<>(10, LengthUnit.FEET);
+
+        QuantityModel<LengthUnit> q2 =
+                new QuantityModel<>(5, LengthUnit.FEET);
+
+        assertEquals(2.0, service.divide(q1, q2));
+    }
+
+    @Test
+    void shouldDivideInchesCorrectly() {
+        QuantityModel<LengthUnit> q1 =
+                new QuantityModel<>(24, LengthUnit.INCHES);
+
+        QuantityModel<LengthUnit> q2 =
+                new QuantityModel<>(12, LengthUnit.INCHES);
+
+        assertEquals(2.0, service.divide(q1, q2));
+    }
+
+    @Test
+    void shouldDivideWeightsCorrectly() {
+        QuantityModel<WeightUnit> q1 =
+                new QuantityModel<>(10, WeightUnit.KILOGRAM);
+
+        QuantityModel<WeightUnit> q2 =
+                new QuantityModel<>(2, WeightUnit.KILOGRAM);
+
+        assertEquals(5.0, service.divide(q1, q2));
+    }
+
+    @Test
+    void shouldDivideVolumesCorrectly() {
+        QuantityModel<VolumeUnit> q1 =
+                new QuantityModel<>(10, VolumeUnit.LITRE);
+
+        QuantityModel<VolumeUnit> q2 =
+                new QuantityModel<>(2, VolumeUnit.LITRE);
+
+        assertEquals(5.0, service.divide(q1, q2));
+    }
+
+    @Test
+    void shouldThrowExceptionForDivisionByZero() {
+        QuantityModel<LengthUnit> q1 =
+                new QuantityModel<>(10, LengthUnit.FEET);
+
+        QuantityModel<LengthUnit> q2 =
+                new QuantityModel<>(0, LengthUnit.FEET);
+
+        assertThrows(
+                ArithmeticException.class,
+                () -> service.divide(q1, q2)
         );
     }
 
     @Test
-    public void testWeight_AddDifferentUnits() {
-        Weight w1 = new Weight(1.0, WeightUnit.KILOGRAM);
-        Weight w2 = new Weight(1000.0, WeightUnit.GRAM);
+    void shouldStoreDivisionHistory() {
+        QuantityModel<LengthUnit> q1 =
+                new QuantityModel<>(10, LengthUnit.FEET);
+
+        QuantityModel<LengthUnit> q2 =
+                new QuantityModel<>(5, LengthUnit.FEET);
+
+        service.divide(q1, q2);
+
+        assertEquals(1, service.getHistory().size());
+    }
+
+    @Test
+    void shouldStoreDivideOperationType() {
+        QuantityModel<LengthUnit> q1 =
+                new QuantityModel<>(10, LengthUnit.FEET);
+
+        QuantityModel<LengthUnit> q2 =
+                new QuantityModel<>(5, LengthUnit.FEET);
+
+        service.divide(q1, q2);
 
         assertEquals(
-                new Weight(2.0, WeightUnit.KILOGRAM),
-                w1.add(w2)
+                "DIVIDE",
+                service.getHistory().get(0).getOperation()
+        );
+    }
+
+    // ---------------- EXCEPTION TESTS ----------------
+
+    @Test
+    void shouldThrowExceptionForNullUnit() {
+        assertThrows(
+                IllegalArgumentException.class,
+                () -> new QuantityModel<>(10, null)
         );
     }
 
     @Test
-    public void testWeight_AddWithTargetUnitGram() {
-        Weight w1 = new Weight(1.0, WeightUnit.KILOGRAM);
-        Weight w2 = new Weight(1000.0, WeightUnit.GRAM);
+    void shouldThrowExceptionForNullOperands() {
+        QuantityModel<LengthUnit> q1 =
+                new QuantityModel<>(1, LengthUnit.FEET);
 
-        assertEquals(
-                new Weight(2000.0, WeightUnit.GRAM),
-                w1.add(w2, WeightUnit.GRAM)
+        assertThrows(
+                IllegalArgumentException.class,
+                () -> service.add(q1, null)
         );
     }
 
     @Test
-    public void testWeight_AddPoundAndKilogram() {
-        Weight w1 = new Weight(2.20462, WeightUnit.POUND);
-        Weight w2 = new Weight(1.0, WeightUnit.KILOGRAM);
+    void shouldThrowExceptionForDifferentUnitCategories() {
+        QuantityModel<IMeasurable> q1 =
+                new QuantityModel<>(1, LengthUnit.FEET);
 
-        Weight result = w1.add(w2, WeightUnit.POUND);
+        QuantityModel<IMeasurable> q2 =
+                new QuantityModel<>(1, WeightUnit.KILOGRAM);
 
-        assertEquals(new Weight(4.41, WeightUnit.POUND), result);
-    }
-
-    @Test
-    public void testWeight_AdditionCommutativity() {
-        Weight w1 = new Weight(1.0, WeightUnit.KILOGRAM);
-        Weight w2 = new Weight(1000.0, WeightUnit.GRAM);
-
-        assertEquals(w1.add(w2), w2.add(w1));
-    }
-
-    @Test
-    public void testWeight_AdditionWithZero() {
-        Weight w = new Weight(5.0, WeightUnit.KILOGRAM);
-        Weight zero = new Weight(0.0, WeightUnit.GRAM);
-
-        assertEquals(w, w.add(zero));
-    }
-
-    @Test
-    public void testWeight_AdditionNegativeValues() {
-        Weight w1 = new Weight(5.0, WeightUnit.KILOGRAM);
-        Weight w2 = new Weight(-2000.0, WeightUnit.GRAM);
-
-        assertEquals(
-                new Weight(3.0, WeightUnit.KILOGRAM),
-                w1.add(w2)
+        assertThrows(
+                IllegalArgumentException.class,
+                () -> service.areEqual(q1, q2)
         );
     }
 
     @Test
-    public void testWeight_AdditionLargeValues() {
-        Weight w1 = new Weight(1e6, WeightUnit.KILOGRAM);
-        Weight w2 = new Weight(1e6, WeightUnit.KILOGRAM);
+    void shouldThrowExceptionForTemperatureAddition() {
+        QuantityModel<TemperatureUnit> t1 =
+                new QuantityModel<>(0, TemperatureUnit.CELSIUS);
 
-        assertEquals(
-                new Weight(2e6, WeightUnit.KILOGRAM),
-                w1.add(w2)
+        QuantityModel<TemperatureUnit> t2 =
+                new QuantityModel<>(32, TemperatureUnit.FAHRENHEIT);
+
+        assertThrows(
+                UnsupportedOperationException.class,
+                () -> service.add(t1, t2)
         );
     }
 
-    // -------- Edge / Validation --------
-
     @Test
-    public void testWeight_NullUnitThrowsException() {
-        assertThrows(IllegalArgumentException.class,
-                () -> new Weight(1.0, null));
+    void shouldThrowExceptionForTemperatureSubtraction() {
+        QuantityModel<TemperatureUnit> t1 =
+                new QuantityModel<>(0, TemperatureUnit.CELSIUS);
+
+        QuantityModel<TemperatureUnit> t2 =
+                new QuantityModel<>(32, TemperatureUnit.FAHRENHEIT);
+
+        assertThrows(
+                UnsupportedOperationException.class,
+                () -> service.subtract(t1, t2)
+        );
     }
 
     @Test
-    public void testWeight_InvalidValueThrowsException() {
-        assertThrows(IllegalArgumentException.class,
-                () -> new Weight(Double.NaN, WeightUnit.GRAM));
+    void shouldThrowExceptionForTemperatureDivision() {
+        QuantityModel<TemperatureUnit> t1 =
+                new QuantityModel<>(0, TemperatureUnit.CELSIUS);
+
+        QuantityModel<TemperatureUnit> t2 =
+                new QuantityModel<>(32, TemperatureUnit.FAHRENHEIT);
+
+        assertThrows(
+                UnsupportedOperationException.class,
+                () -> service.divide(t1, t2)
+        );
     }
 
     @Test
-    public void testWeight_NullAdditionThrowsException() {
-        Weight w = new Weight(1.0, WeightUnit.KILOGRAM);
+    void shouldThrowExceptionForNullConversionTarget() {
+        QuantityModel<LengthUnit> q1 =
+                new QuantityModel<>(1, LengthUnit.FEET);
 
-        assertThrows(IllegalArgumentException.class,
-                () -> w.add(null));
+        assertThrows(
+                IllegalArgumentException.class,
+                () -> service.convert(q1, null)
+        );
     }
 
     @Test
-    public void testWeight_NullTargetUnitThrowsException() {
-        Weight w1 = new Weight(1.0, WeightUnit.KILOGRAM);
-        Weight w2 = new Weight(1.0, WeightUnit.KILOGRAM);
+    void shouldThrowExceptionForNullQuantityInConversion() {
+        assertThrows(
+                IllegalArgumentException.class,
+                () -> service.convert(null, LengthUnit.FEET)
+        );
+    }
 
-        assertThrows(IllegalArgumentException.class,
-                () -> w1.add(w2, null));
+    // ---------------- DTO TESTS ----------------
+
+    @Test
+    void shouldCreateValidDTO() {
+        QuantityDTO dto =
+                new QuantityDTO(10, "FEET");
+
+        assertEquals(10, dto.getValue());
+        assertEquals("FEET", dto.getUnit());
+    }
+
+    @Test
+    void shouldThrowExceptionForInvalidDTOValue() {
+        assertThrows(
+                IllegalArgumentException.class,
+                () -> new QuantityDTO(Double.NaN, "FEET")
+        );
+    }
+
+    @Test
+    void shouldThrowExceptionForNullDTOUnit() {
+        assertThrows(
+                IllegalArgumentException.class,
+                () -> new QuantityDTO(10, null)
+        );
+    }
+
+    @Test
+    void shouldThrowExceptionForBlankDTOUnit() {
+        assertThrows(
+                IllegalArgumentException.class,
+                () -> new QuantityDTO(10, "")
+        );
     }
 }
