@@ -1,18 +1,18 @@
 package com.apps.quantitymeasurement.repository;
 
-import com.apps.quantitymeasurement.entity.QuantityEntity;
+import com.apps.quantitymeasurement.entity.QuantityMeasurementEntity;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class InMemoryQuantityRepository
-        implements QuantityRepository {
+public class QuantityMeasurementCacheRepository
+        implements IQuantityMeasurementRepository {
 
-    private final List<QuantityEntity> storage =
+    private final List<QuantityMeasurementEntity> storage =
             new ArrayList<>();
 
     @Override
-    public void save(QuantityEntity entity) {
+    public void save(QuantityMeasurementEntity entity) {
 
         if (entity == null) {
             throw new IllegalArgumentException(
@@ -24,7 +24,7 @@ public class InMemoryQuantityRepository
     }
 
     @Override
-    public List<QuantityEntity> findAll() {
+    public List<QuantityMeasurementEntity> findAll() {
         return new ArrayList<>(storage);
     }
 }
