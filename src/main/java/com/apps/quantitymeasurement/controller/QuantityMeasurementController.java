@@ -1,21 +1,20 @@
 package com.apps.quantitymeasurement.controller;
 
-import com.apps.quantitymeasurement.dto.QuantityDTO;
-import com.apps.quantitymeasurement.entity.QuantityEntity;
-import com.apps.quantitymeasurement.mapper.QuantityMapper;
-import com.apps.quantitymeasurement.model.QuantityModel;
-import com.apps.quantitymeasurement.service.QuantityService;
+import com.apps.quantitymeasurement.entity.QuantityDTO;
+import com.apps.quantitymeasurement.entity.QuantityMeasurementEntity;
+import com.apps.quantitymeasurement.entity.QuantityModel;
+import com.apps.quantitymeasurement.service.IQuantityMeasurementService;
 import com.apps.quantitymeasurement.unit.IMeasurable;
 import com.apps.quantitymeasurement.util.UnitFactory;
 
 import java.util.List;
 
-public class QuantityController {
+public class QuantityMeasurementController {
 
-    private final QuantityService service;
+    private final IQuantityMeasurementService service;
 
-    public QuantityController(
-            QuantityService service
+    public QuantityMeasurementController(
+            IQuantityMeasurementService service
     ) {
         this.service = service;
     }
@@ -26,7 +25,7 @@ public class QuantityController {
     ) {
 
         QuantityModel<IMeasurable> sourceModel =
-                QuantityMapper.toModel(sourceDTO);
+                toModel(sourceDTO);
 
         IMeasurable targetUnit =
                 UnitFactory.getUnit(targetUnitName);
@@ -34,7 +33,7 @@ public class QuantityController {
         QuantityModel<IMeasurable> result =
                 service.convert(sourceModel, targetUnit);
 
-        return QuantityMapper.toDTO(result);
+        return toDTO(result);
     }
 
     public boolean areEqual(
@@ -43,10 +42,10 @@ public class QuantityController {
     ) {
 
         QuantityModel<IMeasurable> model1 =
-                QuantityMapper.toModel(dto1);
+                toModel(dto1);
 
         QuantityModel<IMeasurable> model2 =
-                QuantityMapper.toModel(dto2);
+                toModel(dto2);
 
         return service.areEqual(model1, model2);
     }
@@ -57,15 +56,15 @@ public class QuantityController {
     ) {
 
         QuantityModel<IMeasurable> model1 =
-                QuantityMapper.toModel(dto1);
+                toModel(dto1);
 
         QuantityModel<IMeasurable> model2 =
-                QuantityMapper.toModel(dto2);
+                toModel(dto2);
 
         QuantityModel<IMeasurable> result =
                 service.add(model1, model2);
 
-        return QuantityMapper.toDTO(result);
+        return toDTO(result);
     }
 
     public QuantityDTO subtract(
@@ -74,15 +73,15 @@ public class QuantityController {
     ) {
 
         QuantityModel<IMeasurable> model1 =
-                QuantityMapper.toModel(dto1);
+                toModel(dto1);
 
         QuantityModel<IMeasurable> model2 =
-                QuantityMapper.toModel(dto2);
+                toModel(dto2);
 
         QuantityModel<IMeasurable> result =
                 service.subtract(model1, model2);
 
-        return QuantityMapper.toDTO(result);
+        return toDTO(result);
     }
 
     public double divide(
@@ -91,15 +90,35 @@ public class QuantityController {
     ) {
 
         QuantityModel<IMeasurable> model1 =
-                QuantityMapper.toModel(dto1);
+                toModel(dto1);
 
         QuantityModel<IMeasurable> model2 =
-                QuantityMapper.toModel(dto2);
+                toModel(dto2);
 
         return service.divide(model1, model2);
     }
 
-    public List<QuantityEntity> getHistory() {
+    public List<QuantityMeasurementEntity> getHistory() {
         return service.getHistory();
+    }
+
+    private QuantityModel<IMeasurable> toModel(
+            QuantityDTO dto
+    ) {
+
+        return new QuantityModel<>(
+                dto.getValue(),
+                UnitFactory.getUnit(dto.getUnit())
+        );
+    }
+
+    private QuantityDTO toDTO(
+            QuantityModel<IMeasurable> model
+    ) {
+
+        return new QuantityDTO(
+                model.getValue(),
+                model.getUnit().toString()
+        );
     }
 }
