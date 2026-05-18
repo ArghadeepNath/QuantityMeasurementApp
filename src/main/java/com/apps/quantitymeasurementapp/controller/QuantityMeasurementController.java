@@ -7,7 +7,12 @@ import com.apps.quantitymeasurementapp.service.IQuantityMeasurementService;
 import com.apps.quantitymeasurementapp.unit.IMeasurable;
 import com.apps.quantitymeasurementapp.util.UnitFactory;
 
+import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
+
+@RestController
+@RequestMapping("/api/v1/quantity")
 
 public class QuantityMeasurementController {
 
@@ -19,47 +24,48 @@ public class QuantityMeasurementController {
         this.service = service;
     }
 
+    @PostMapping("/convert")
     public QuantityDTO convert(
-            QuantityDTO sourceDTO,
-            String targetUnitName
+            @RequestBody QuantityDTO sourceDTO,
+            @RequestParam String targetUnit
     ) {
 
         QuantityModel<IMeasurable> sourceModel =
                 toModel(sourceDTO);
 
-        IMeasurable targetUnit =
-                UnitFactory.getUnit(targetUnitName);
+        IMeasurable target =
+                UnitFactory.getUnit(targetUnit);
 
         QuantityModel<IMeasurable> result =
-                service.convert(sourceModel, targetUnit);
+                service.convert(sourceModel, target);
 
         return toDTO(result);
     }
 
+    @PostMapping("/equal")
     public boolean areEqual(
-            QuantityDTO dto1,
-            QuantityDTO dto2
+            @RequestBody List<QuantityDTO> dtos
     ) {
 
         QuantityModel<IMeasurable> model1 =
-                toModel(dto1);
+                toModel(dtos.get(0));
 
         QuantityModel<IMeasurable> model2 =
-                toModel(dto2);
+                toModel(dtos.get(1));
 
         return service.areEqual(model1, model2);
     }
 
+    @PostMapping("/add")
     public QuantityDTO add(
-            QuantityDTO dto1,
-            QuantityDTO dto2
+            @RequestBody List<QuantityDTO> dtos
     ) {
 
         QuantityModel<IMeasurable> model1 =
-                toModel(dto1);
+                toModel(dtos.get(0));
 
         QuantityModel<IMeasurable> model2 =
-                toModel(dto2);
+                toModel(dtos.get(1));
 
         QuantityModel<IMeasurable> result =
                 service.add(model1, model2);
@@ -67,16 +73,16 @@ public class QuantityMeasurementController {
         return toDTO(result);
     }
 
+    @PostMapping("/subtract")
     public QuantityDTO subtract(
-            QuantityDTO dto1,
-            QuantityDTO dto2
+            @RequestBody List<QuantityDTO> dtos
     ) {
 
         QuantityModel<IMeasurable> model1 =
-                toModel(dto1);
+                toModel(dtos.get(0));
 
         QuantityModel<IMeasurable> model2 =
-                toModel(dto2);
+                toModel(dtos.get(1));
 
         QuantityModel<IMeasurable> result =
                 service.subtract(model1, model2);
@@ -84,21 +90,23 @@ public class QuantityMeasurementController {
         return toDTO(result);
     }
 
+    @PostMapping("/divide")
     public double divide(
-            QuantityDTO dto1,
-            QuantityDTO dto2
+            @RequestBody List<QuantityDTO> dtos
     ) {
 
         QuantityModel<IMeasurable> model1 =
-                toModel(dto1);
+                toModel(dtos.get(0));
 
         QuantityModel<IMeasurable> model2 =
-                toModel(dto2);
+                toModel(dtos.get(1));
 
         return service.divide(model1, model2);
     }
 
+    @GetMapping("/history")
     public List<QuantityMeasurementEntity> getHistory() {
+
         return service.getHistory();
     }
 

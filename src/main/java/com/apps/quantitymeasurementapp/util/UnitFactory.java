@@ -1,6 +1,6 @@
 package com.apps.quantitymeasurementapp.util;
 
-import com.apps.quantitymeasurement.unit.*;
+import com.apps.quantitymeasurementapp.unit.*;
 
 public class UnitFactory {
 

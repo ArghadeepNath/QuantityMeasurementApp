@@ -2,11 +2,11 @@ package com.apps.quantitymeasurementapp.repository;
 
 import com.apps.quantitymeasurementapp.entity.QuantityMeasurementEntity;
 
-import java.util.List;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-public interface IQuantityMeasurementRepository {
+@Repository
+public interface IQuantityMeasurementRepository
+        extends JpaRepository<QuantityMeasurementEntity, Long> {
 
-    void save(QuantityMeasurementEntity entity);
-
-    List<QuantityMeasurementEntity> findAll();
 }

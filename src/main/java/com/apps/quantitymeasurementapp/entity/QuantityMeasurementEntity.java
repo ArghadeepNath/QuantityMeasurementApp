@@ -1,8 +1,15 @@
 package com.apps.quantitymeasurementapp.entity;
 
+import jakarta.persistence.*;
+
+@Entity
+@Table(name = "quantity_measurement_entity")
+
 public class QuantityMeasurementEntity {
 
-    private long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     private double thisValue;
 
@@ -24,20 +31,22 @@ public class QuantityMeasurementEntity {
 
     private String resultMeasurementType;
 
+    @Column(length = 1000)
     private String resultString;
 
     private boolean isError;
 
+    @Column(length = 1000)
     private String errorMessage;
 
     public QuantityMeasurementEntity() {
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -61,11 +70,8 @@ public class QuantityMeasurementEntity {
         return thisMeasurementType;
     }
 
-    public void setThisMeasurementType(
-            String thisMeasurementType
-    ) {
-        this.thisMeasurementType =
-                thisMeasurementType;
+    public void setThisMeasurementType(String thisMeasurementType) {
+        this.thisMeasurementType = thisMeasurementType;
     }
 
     public double getThatValue() {
@@ -88,11 +94,8 @@ public class QuantityMeasurementEntity {
         return thatMeasurementType;
     }
 
-    public void setThatMeasurementType(
-            String thatMeasurementType
-    ) {
-        this.thatMeasurementType =
-                thatMeasurementType;
+    public void setThatMeasurementType(String thatMeasurementType) {
+        this.thatMeasurementType = thatMeasurementType;
     }
 
     public String getOperation() {
@@ -123,20 +126,15 @@ public class QuantityMeasurementEntity {
         return resultMeasurementType;
     }
 
-    public void setResultMeasurementType(
-            String resultMeasurementType
-    ) {
-        this.resultMeasurementType =
-                resultMeasurementType;
+    public void setResultMeasurementType(String resultMeasurementType) {
+        this.resultMeasurementType = resultMeasurementType;
     }
 
     public String getResultString() {
         return resultString;
     }
 
-    public void setResultString(
-            String resultString
-    ) {
+    public void setResultString(String resultString) {
         this.resultString = resultString;
     }
 
@@ -152,19 +150,7 @@ public class QuantityMeasurementEntity {
         return errorMessage;
     }
 
-    public void setErrorMessage(
-            String errorMessage
-    ) {
+    public void setErrorMessage(String errorMessage) {
         this.errorMessage = errorMessage;
-    }
-
-    @Override
-    public String toString() {
-
-        return "QuantityMeasurementEntity{" +
-                "id=" + id +
-                ", operation='" + operation + '\'' +
-                ", resultString='" + resultString + '\'' +
-                '}';
     }
 }

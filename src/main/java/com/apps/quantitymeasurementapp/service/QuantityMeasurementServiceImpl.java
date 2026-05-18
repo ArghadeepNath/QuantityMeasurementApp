@@ -5,9 +5,11 @@ import com.apps.quantitymeasurementapp.entity.QuantityModel;
 import com.apps.quantitymeasurementapp.exception.QuantityMeasurementException;
 import com.apps.quantitymeasurementapp.repository.IQuantityMeasurementRepository;
 import com.apps.quantitymeasurementapp.unit.IMeasurable;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class QuantityMeasurementServiceImpl
         implements IQuantityMeasurementService {
 
