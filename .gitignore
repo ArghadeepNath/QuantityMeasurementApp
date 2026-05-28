@@ -1,6 +1,8 @@
-node_modules/
-.env
-dist/
-build/
+frontend/node_modules/
+backend/target/
 target/
-*.log
+.env
+.idea/
+backend/src/main/resources/.env
+*.db
+*.trace.db
