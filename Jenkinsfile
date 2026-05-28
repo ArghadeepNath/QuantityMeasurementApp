@@ -1,7 +1,6 @@
 pipeline {
 agent any
 
-```
 tools {
     maven 'Maven'
     nodejs 'NodeJS'
@@ -32,6 +31,5 @@ stages {
         }
     }
 }
-```
 
 }
