@@ -6,7 +6,7 @@ import com.apps.quantitymeasurementapp.entity.QuantityModel;
 import com.apps.quantitymeasurementapp.service.IQuantityMeasurementService;
 import com.apps.quantitymeasurementapp.unit.IMeasurable;
 import com.apps.quantitymeasurementapp.util.UnitFactory;
-
+import com.apps.quantitymeasurementapp.entity.QuantityOperationRequest;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -26,15 +26,16 @@ public class QuantityMeasurementController {
 
     @PostMapping("/convert")
     public QuantityDTO convert(
-            @RequestBody QuantityDTO sourceDTO,
-            @RequestParam String targetUnit
-    ) {
-
+            @RequestBody QuantityOperationRequest request
+    )
+    {
         QuantityModel<IMeasurable> sourceModel =
-                toModel(sourceDTO);
+                toModel(request.getQ1());
 
         IMeasurable target =
-                UnitFactory.getUnit(targetUnit);
+                UnitFactory.getUnit(
+                        request.getQ2().getUnit()
+                );
 
         QuantityModel<IMeasurable> result =
                 service.convert(sourceModel, target);
@@ -42,7 +43,7 @@ public class QuantityMeasurementController {
         return toDTO(result);
     }
 
-    @PostMapping("/equal")
+    @PostMapping("/compare")
     public boolean areEqual(
             @RequestBody List<QuantityDTO> dtos
     ) {

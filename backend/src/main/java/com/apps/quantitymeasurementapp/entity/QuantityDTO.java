@@ -1,9 +1,16 @@
 package com.apps.quantitymeasurementapp.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class QuantityDTO {
 
     private double value;
     private String unit;
+
+    // Required by Jackson
+    public QuantityDTO() {
+    }
 
     public QuantityDTO(double value, String unit) {
 
@@ -25,8 +32,16 @@ public class QuantityDTO {
         return value;
     }
 
+    public void setValue(double value) {
+        this.value = value;
+    }
+
     public String getUnit() {
         return unit;
+    }
+
+    public void setUnit(String unit) {
+        this.unit = unit;
     }
 
     @Override

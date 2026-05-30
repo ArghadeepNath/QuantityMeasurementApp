@@ -13,7 +13,7 @@ const TYPES = [
 ];
 
 const UNITS = {
-  length:      ["FEET", "INCH", "METER", "KILOMETER", "MILE", "YARD", "CENTIMETER", "MILLIMETER"],
+  length:      ["FEET", "INCHES", "METER", "KILOMETER", "MILE", "YARD", "CENTIMETER", "MILLIMETER"],
   weight:      ["KILOGRAM", "GRAM", "MILLIGRAM", "POUND", "OUNCE", "TON"],
   temperature: ["CELSIUS", "FAHRENHEIT", "KELVIN"],
   volume:      ["LITER", "MILLILITER", "CUBIC_METER", "GALLON", "FLUID_OUNCE", "CUP"],
@@ -65,7 +65,7 @@ export default function App() {
   const [fromVal,  setFromVal]  = useState("1");
   const [fromUnit, setFromUnit] = useState("FEET");
   const [toVal,    setToVal]    = useState("");   // auto-filled by backend
-  const [toUnit,   setToUnit]   = useState("INCH");
+  const [toUnit,   setToUnit]   = useState("INCHES");
 
   // Arithmetic
   const [val1,    setVal1]    = useState("1");
@@ -182,7 +182,7 @@ export default function App() {
       if (res.status === 401) { setError("Unauthorized — please check your JWT token."); return; }
       if (!res.ok) { setError(`Server error: ${res.status}`); return; }
       const data = await res.json();
-      setToVal(data);
+      setToVal(data.value);
     } catch (e) {
       setError("Could not connect to backend.");
     }
@@ -415,8 +415,11 @@ export default function App() {
                           <div style={{ fontSize: "0.68rem", fontWeight: 800, color: "#aab0cc", letterSpacing: "0.1em", textTransform: "uppercase", marginBottom: 4 }}>
                             Result
                           </div>
-                          <div style={S.resultValue}>{result}</div>
-                        </div>
+<div style={S.resultValue}>
+  {typeof result === "object"
+    ? `${result.value} ${result.unit}`
+    : result}
+</div>                        </div>
                         <select style={S.resultUnitSelect} value={outUnit} onChange={(e) => setOutUnit(e.target.value)}>
                           {units.map((u) => <option key={u}>{u}</option>)}
                         </select>
