@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 
 // ─── CONFIG ───────────────────────────────────────────────
-const BASE_URL = "http://localhost:8080";
+const BASE_URL = "http://measureapp.duckdns.org:8080";
 const API_URL = `${BASE_URL}/api/v1/quantity`;
 
 // ─── CONSTANTS ────────────────────────────────────────────
@@ -13,10 +13,32 @@ const TYPES = [
 ];
 
 const UNITS = {
-  length:      ["FEET", "INCHES", "METER", "KILOMETER", "MILE", "YARD", "CENTIMETER", "MILLIMETER"],
-  weight:      ["KILOGRAM", "GRAM", "MILLIGRAM", "POUND", "OUNCE", "TON"],
-  temperature: ["CELSIUS", "FAHRENHEIT", "KELVIN"],
-  volume:      ["LITER", "MILLILITER", "CUBIC_METER", "GALLON", "FLUID_OUNCE", "CUP"],
+  length: [
+    "FEET",
+    "INCHES",
+    "YARDS",
+    "CENTIMETERS"
+  ],
+
+  weight: [
+    "MILLIGRAM",
+    "GRAM",
+    "KILOGRAM",
+    "POUND",
+    "TONNE"
+  ],
+
+  temperature: [
+    "CELSIUS",
+    "FAHRENHEIT",
+    "KELVIN"
+  ],
+
+  volume: [
+    "LITRE",
+    "MILLILITRE",
+    "GALLON"
+  ]
 };
 
 const OP_ENDPOINTS = { "+": "add", "-": "subtract", "*": "multiply", "/": "divide" };
@@ -71,7 +93,7 @@ export default function App() {
   const [val1,    setVal1]    = useState("1");
   const [unit1,   setUnit1]   = useState("FEET");
   const [val2,    setVal2]    = useState("12");
-  const [unit2,   setUnit2]   = useState("INCH");
+  const [unit2,   setUnit2]   = useState("INCHES");
   const [outUnit, setOutUnit] = useState("FEET");
   const [op,      setOp]      = useState("+");
 
